@@ -2,7 +2,11 @@ fileFormatVersion: 2
 guid: 8b8c3f984be144fe3810fb5690664fcf
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _initialShader: {fileID: 4800000, guid: d4dec573d97d441069fca52b6d386d8f, type: 3}
+  - _deltaShader: {fileID: 4800000, guid: 6dde4510b2764416581ef2e058d31e26, type: 3}
+  - _debugShader: {fileID: 4800000, guid: 50794686bc3444d01964664fccff75bf, type: 3}
+  - _meshShader: {fileID: 4800000, guid: d5df9882eb4ac420cb9650be25a83b62, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
