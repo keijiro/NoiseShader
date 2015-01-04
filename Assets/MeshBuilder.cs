@@ -5,10 +5,10 @@ using System.Collections;
 public class MeshBuilder : MonoBehaviour
 {
     [SerializeField]
-    Vector2 _size = new Vector2(5, 5);
+    Vector2 _size = new Vector2(10, 10);
 
     [SerializeField]
-    float _density = 10;
+    float _density = 5;
 
     [SerializeField]
     Shader _initialShader;

@@ -16,7 +16,7 @@
     float4 frag_offs(v2f_img i) : SV_Target 
     {
         float3 coord = tex2D(_MainTex, i.uv).xyz;
-        float3 offs = float3(0.5, 0, 0) * _Time.y;
+        float3 offs = float3(-1, 0, 0) * _Time.y;
 
         float n1 =
             cnoise(coord * 1 + offs) +
