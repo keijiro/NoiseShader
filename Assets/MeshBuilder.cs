@@ -5,10 +5,16 @@ using System.Collections;
 public class MeshBuilder : MonoBehaviour
 {
     [SerializeField]
-    Vector2 _size = new Vector2(10, 10);
+    float _radius = 5;
 
     [SerializeField]
-    float _density = 5;
+    float _height = 10;
+
+    [SerializeField]
+    int _slices = 40;
+
+    [SerializeField]
+    int _stacks = 40;
 
     [SerializeField]
     Shader _initialShader;
@@ -32,18 +38,10 @@ public class MeshBuilder : MonoBehaviour
     RenderTexture _normal1RT;
     RenderTexture _normal2RT;
 
-    int ColumnCount {
-        get { return Mathf.FloorToInt(_size.x * _density); }
-    }
-
-    int RowCount {
-        get { return Mathf.FloorToInt(_size.y * _density); }
-    }
-
     Mesh BuildMesh()
     {
-        var Nx = ColumnCount;
-        var Ny = RowCount;
+        var Nx = _slices;
+        var Ny = _stacks;
 
         var Sx = 1.0f / Nx;
         var Sy = 1.0f / Ny;
@@ -104,14 +102,15 @@ public class MeshBuilder : MonoBehaviour
         mesh.SetIndices(IA1, MeshTopology.Triangles, 0);
         mesh.SetIndices(IA2, MeshTopology.Triangles, 1);
         mesh.Optimize();
+        mesh.bounds = new Bounds(Vector3.zero, Vector3.one * 10000);
 
         return mesh;
     }
 
     void Start()
     {
-        var width = ColumnCount;
-        var height = RowCount;
+        var width = _slices;
+        var height = _stacks;
 
         _initialRT  = new RenderTexture(width, height, 0, RenderTextureFormat.ARGBFloat);
         _positionRT = new RenderTexture(width, height, 0, RenderTextureFormat.ARGBFloat);
@@ -124,7 +123,7 @@ public class MeshBuilder : MonoBehaviour
         _normal2RT.filterMode  = FilterMode.Point;
 
         var material = new Material(_initialShader);
-        material.SetVector("_Size", new Vector4(_size.x, _size.y, 0, 0));
+        material.SetVector("_Size", new Vector4(_radius, _height, 0, 0));
 
         Graphics.Blit(null, _initialRT,  material, 0);
         Graphics.Blit(null, _positionRT, material, 0);
