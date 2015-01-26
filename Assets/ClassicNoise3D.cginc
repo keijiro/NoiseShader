@@ -38,7 +38,7 @@ float4 permute(float4 x)
 
 float4 taylorInvSqrt(float4 r)
 {
-  return float4(1.79284291400159) - r * 0.85373472095314;
+  return (float4)1.79284291400159 - r * 0.85373472095314;
 }
 
 float3 fade(float3 t) {
@@ -49,15 +49,15 @@ float3 fade(float3 t) {
 float cnoise(float3 P)
 {
   float3 Pi0 = floor(P); // Integer part for indexing
-  float3 Pi1 = Pi0 + float3(1.0); // Integer part + 1
+  float3 Pi1 = Pi0 + (float3)1.0; // Integer part + 1
   Pi0 = mod289(Pi0);
   Pi1 = mod289(Pi1);
   float3 Pf0 = frac(P); // Fractional part for interpolation
-  float3 Pf1 = Pf0 - float3(1.0); // Fractional part - 1.0
+  float3 Pf1 = Pf0 - (float3)1.0; // Fractional part - 1.0
   float4 ix = float4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
   float4 iy = float4(Pi0.y, Pi0.y, Pi1.y, Pi1.y);
-  float4 iz0 = float4(Pi0.z);
-  float4 iz1 = float4(Pi1.z);
+  float4 iz0 = (float4)Pi0.z;
+  float4 iz1 = (float4)Pi1.z;
 
   float4 ixy = permute(permute(ix) + iy);
   float4 ixy0 = permute(ixy + iz0);
@@ -66,18 +66,18 @@ float cnoise(float3 P)
   float4 gx0 = ixy0 / 7.0;
   float4 gy0 = frac(floor(gx0) / 7.0) - 0.5;
   gx0 = frac(gx0);
-  float4 gz0 = float4(0.5) - abs(gx0) - abs(gy0);
-  float4 sz0 = step(gz0, float4(0.0));
-  gx0 -= sz0 * (step(float4(0.0), gx0) - 0.5);
-  gy0 -= sz0 * (step(float4(0.0), gy0) - 0.5);
+  float4 gz0 = (float4)0.5 - abs(gx0) - abs(gy0);
+  float4 sz0 = step(gz0, (float4)0.0);
+  gx0 -= sz0 * (step((float4)0.0, gx0) - 0.5);
+  gy0 -= sz0 * (step((float4)0.0, gy0) - 0.5);
 
   float4 gx1 = ixy1 / 7.0;
   float4 gy1 = frac(floor(gx1) / 7.0) - 0.5;
   gx1 = frac(gx1);
-  float4 gz1 = float4(0.5) - abs(gx1) - abs(gy1);
-  float4 sz1 = step(gz1, float4(0.0));
-  gx1 -= sz1 * (step(float4(0.0), gx1) - 0.5);
-  gy1 -= sz1 * (step(float4(0.0), gy1) - 0.5);
+  float4 gz1 = (float4)0.5 - abs(gx1) - abs(gy1);
+  float4 sz1 = step(gz1, (float4)0.0);
+  gx1 -= sz1 * (step((float4)0.0, gx1) - 0.5);
+  gy1 -= sz1 * (step((float4)0.0, gy1) - 0.5);
 
   float3 g000 = float3(gx0.x,gy0.x,gz0.x);
   float3 g100 = float3(gx0.y,gy0.y,gz0.y);
@@ -120,15 +120,15 @@ float cnoise(float3 P)
 float pnoise(float3 P, float3 rep)
 {
   float3 Pi0 = mod(floor(P), rep); // Integer part, modulo period
-  float3 Pi1 = mod(Pi0 + float3(1.0), rep); // Integer part + 1, mod period
+  float3 Pi1 = mod(Pi0 + (float3)1.0, rep); // Integer part + 1, mod period
   Pi0 = mod289(Pi0);
   Pi1 = mod289(Pi1);
   float3 Pf0 = frac(P); // Fractional part for interpolation
-  float3 Pf1 = Pf0 - float3(1.0); // Fractional part - 1.0
+  float3 Pf1 = Pf0 - (float3)1.0; // Fractional part - 1.0
   float4 ix = float4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
   float4 iy = float4(Pi0.y, Pi0.y, Pi1.y, Pi1.y);
-  float4 iz0 = float4(Pi0.z);
-  float4 iz1 = float4(Pi1.z);
+  float4 iz0 = (float4)Pi0.z;
+  float4 iz1 = (float4)Pi1.z;
 
   float4 ixy = permute(permute(ix) + iy);
   float4 ixy0 = permute(ixy + iz0);
@@ -137,18 +137,18 @@ float pnoise(float3 P, float3 rep)
   float4 gx0 = ixy0 / 7.0;
   float4 gy0 = frac(floor(gx0) / 7.0) - 0.5;
   gx0 = frac(gx0);
-  float4 gz0 = float4(0.5) - abs(gx0) - abs(gy0);
-  float4 sz0 = step(gz0, float4(0.0));
-  gx0 -= sz0 * (step(float4(0.0), gx0) - 0.5);
-  gy0 -= sz0 * (step(float4(0.0), gy0) - 0.5);
+  float4 gz0 = (float4)0.5 - abs(gx0) - abs(gy0);
+  float4 sz0 = step(gz0, (float4)0.0);
+  gx0 -= sz0 * (step((float4)0.0, gx0) - 0.5);
+  gy0 -= sz0 * (step((float4)0.0, gy0) - 0.5);
 
   float4 gx1 = ixy1 / 7.0;
   float4 gy1 = frac(floor(gx1) / 7.0) - 0.5;
   gx1 = frac(gx1);
-  float4 gz1 = float4(0.5) - abs(gx1) - abs(gy1);
-  float4 sz1 = step(gz1, float4(0.0));
-  gx1 -= sz1 * (step(float4(0.0), gx1) - 0.5);
-  gy1 -= sz1 * (step(float4(0.0), gy1) - 0.5);
+  float4 gz1 = (float4)0.5 - abs(gx1) - abs(gy1);
+  float4 sz1 = step(gz1, (float4)0.0);
+  gx1 -= sz1 * (step((float4)0.0, gx1) - 0.5);
+  gy1 -= sz1 * (step((float4)0.0, gy1) - 0.5);
 
   float3 g000 = float3(gx0.x,gy0.x,gz0.x);
   float3 g100 = float3(gx0.y,gy0.y,gz0.y);

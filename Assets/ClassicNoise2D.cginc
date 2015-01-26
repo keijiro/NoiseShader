@@ -33,7 +33,7 @@ float4 permute(float4 x)
 
 float4 taylorInvSqrt(float4 r)
 {
-  return float4(1.79284291400159) - r * 0.85373472095314;
+  return (float4)1.79284291400159 - r * 0.85373472095314;
 }
 
 float2 fade(float2 t) {
