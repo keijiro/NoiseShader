@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class NoiseTest : MonoBehaviour
 {
@@ -12,31 +11,33 @@ public class NoiseTest : MonoBehaviour
 
     void Start()
     {
-        renderer.material = new Material(shader);
+        GetComponent<Renderer>().material = new Material(shader);
     }
 
     void Update()
     {
+        var r = GetComponent<Renderer>();
+
         if (periodic)
         {
-            renderer.material.DisableKeyword("CNOISE");
-            renderer.material.EnableKeyword("PNOISE");
+            r.material.DisableKeyword("CNOISE");
+            r.material.EnableKeyword("PNOISE");
         }
         else
         {
-            renderer.material.EnableKeyword("CNOISE");
-            renderer.material.DisableKeyword("PNOISE");
+            r.material.EnableKeyword("CNOISE");
+            r.material.DisableKeyword("PNOISE");
         }
 
         if (dimension == 2)
         {
-            renderer.material.EnableKeyword("TWO_DEE");
-            renderer.material.DisableKeyword("THREE_DEE");
+            r.material.EnableKeyword("TWO_DEE");
+            r.material.DisableKeyword("THREE_DEE");
         }
         else
         {
-            renderer.material.DisableKeyword("TWO_DEE");
-            renderer.material.EnableKeyword("THREE_DEE");
+            r.material.DisableKeyword("TWO_DEE");
+            r.material.EnableKeyword("THREE_DEE");
         }
     }
 }

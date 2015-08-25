@@ -62,7 +62,6 @@
         {
             CGPROGRAM
             #pragma target 3.0
-            #pragma glsl
             #pragma vertex vert
             #pragma fragment frag
             ENDCG
