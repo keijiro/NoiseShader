@@ -3,21 +3,22 @@
     CGINCLUDE
 
     #pragma multi_compile CNOISE PNOISE SNOISE
-    #pragma multi_compile TWO_DEE THREE_DEE
+    #pragma multi_compile _ THREED
+    #pragma multi_compile _ FRACTAL
 
     #include "UnityCG.cginc"
 
     #ifdef SNOISE
-        #ifdef TWO_DEE
-            #include "Noise2D.cginc"
-        #else
+        #ifdef THREED
             #include "Noise3D.cginc"
+        #else
+            #include "Noise2D.cginc"
         #endif
     #else
-        #ifdef TWO_DEE
-            #include "ClassicNoise2D.cginc"
-        #else
+        #ifdef THREED
             #include "ClassicNoise3D.cginc"
+        #else
+            #include "ClassicNoise2D.cginc"
         #endif
     #endif
 
@@ -41,28 +42,30 @@
         float w = 0.5;
         #endif
 
+        #ifdef FRACTAL
         for (int i = 0; i < 6; i++)
+        #endif
         {
             float3 coord = float3((uv + float2(0.2, 1) * _Time.y) * s, _Time.y);
             float3 period = float3(s, s, 1) * 2;
 
             #ifdef CNOISE
-                #ifdef TWO_DEE
-                    o += cnoise(coord.xy) * w;
-                #else
+                #ifdef THREED
                     o += cnoise(coord) * w;
-                #endif
-            #elif PNOISE
-                #ifdef TWO_DEE
-                    o += pnoise(coord.xy, period.xy) * w;
                 #else
+                    o += cnoise(coord.xy) * w;
+                #endif
+            #elif defined(PNOISE)
+                #ifdef THREED
                     o += pnoise(coord, period) * w;
+                #else
+                    o += pnoise(coord.xy, period.xy) * w;
                 #endif
             #else
-                #ifdef TWO_DEE
-                    o += snoise(coord.xy) * w;
-                #else
+                #ifdef THREED
                     o += snoise(coord) * w;
+                #else
+                    o += snoise(coord.xy) * w;
                 #endif
             #endif
 

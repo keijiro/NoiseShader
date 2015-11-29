@@ -8,8 +8,11 @@ public class NoiseTest : MonoBehaviour
     [SerializeField]
     NoiseType _noiseType;
 
-    [SerializeField, Range(2, 3)]
-    int dimension = 2;
+    [SerializeField]
+    bool _is3D;
+
+    [SerializeField]
+    bool _isFractal;
 
     [SerializeField]
     Shader shader;
@@ -44,15 +47,14 @@ public class NoiseTest : MonoBehaviour
             _material.EnableKeyword("SNOISE");
         }
 
-        if (dimension == 2)
-        {
-            _material.EnableKeyword("TWO_DEE");
-            _material.DisableKeyword("THREE_DEE");
-        }
+        if (_is3D)
+            _material.EnableKeyword("THREED");
         else
-        {
-            _material.DisableKeyword("TWO_DEE");
-            _material.EnableKeyword("THREE_DEE");
-        }
+            _material.DisableKeyword("THREED");
+
+        if (_isFractal)
+            _material.EnableKeyword("FRACTAL");
+        else
+            _material.DisableKeyword("FRACTAL");
     }
 }

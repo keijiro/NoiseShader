@@ -65,12 +65,11 @@ float snoise(float3 v)
 
 // Gradients: 7x7 points over a square, mapped onto an octahedron.
 // The ring size 17*17 = 289 is close to a multiple of 49 (49*6 = 294)
-  float  n_ = 0.142857142857; // 1.0/7.0
-  float3 ns = n_ * D.wyz - D.xzx;
+  float2 ns = D.wy / 7 - D.xz;
 
-  float4 j = p - 49.0 * floor(p * ns.z * ns.z);  //  mod(p,7*7)
+  float4 j = p - 49.0 * floor(p / 49);  //  mod(p,7*7)
 
-  float4 x_ = floor(j * ns.z);
+  float4 x_ = floor(j / 7);
   float4 y_ = floor(j - 7.0 * x_ );    // mod(j,N)
 
   float4 x = x_ *ns.x + ns.yyyy;
