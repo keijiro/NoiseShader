@@ -2,15 +2,23 @@
 {
     CGINCLUDE
 
-    #pragma multi_compile CNOISE PNOISE
+    #pragma multi_compile CNOISE PNOISE SNOISE
     #pragma multi_compile TWO_DEE THREE_DEE
 
     #include "UnityCG.cginc"
 
-    #ifdef TWO_DEE
-        #include "ClassicNoise2D.cginc"
+    #ifdef SNOISE
+        #ifdef TWO_DEE
+            #include "Noise2D.cginc"
+        #else
+            #include "Noise3D.cginc"
+        #endif
     #else
-        #include "ClassicNoise3D.cginc"
+        #ifdef TWO_DEE
+            #include "ClassicNoise2D.cginc"
+        #else
+            #include "ClassicNoise3D.cginc"
+        #endif
     #endif
 
     v2f_img vert(appdata_base v)
@@ -27,7 +35,11 @@
 
         float o = 0.5;
         float s = 1.0;
+        #ifdef SNOISE
+        float w = 0.25;
+        #else
         float w = 0.5;
+        #endif
 
         for (int i = 0; i < 6; i++)
         {
@@ -40,11 +52,17 @@
                 #else
                     o += cnoise(coord) * w;
                 #endif
-            #else
+            #elif PNOISE
                 #ifdef TWO_DEE
                     o += pnoise(coord.xy, period.xy) * w;
                 #else
                     o += pnoise(coord, period) * w;
+                #endif
+            #else
+                #ifdef TWO_DEE
+                    o += snoise(coord.xy) * w;
+                #else
+                    o += snoise(coord) * w;
                 #endif
             #endif
 
