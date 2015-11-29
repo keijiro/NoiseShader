@@ -1,43 +1,60 @@
 ﻿using UnityEngine;
 
+[ExecuteInEditMode]
 public class NoiseTest : MonoBehaviour
 {
-    public bool periodic;
+    public enum NoiseType { ClassicPerlin, PeriodicPerlin, Simplex }
 
-    [Range(2, 3)]
-    public int dimension = 2;
+    [SerializeField]
+    NoiseType _noiseType;
 
-    public Shader shader;
+    [SerializeField]
+    bool _is3D;
 
-    void Start()
-    {
-        GetComponent<Renderer>().material = new Material(shader);
-    }
+    [SerializeField]
+    bool _isFractal;
+
+    [SerializeField]
+    Shader shader;
+
+    Material _material;
 
     void Update()
     {
-        var r = GetComponent<Renderer>();
-
-        if (periodic)
+        if (_material == null)
         {
-            r.material.DisableKeyword("CNOISE");
-            r.material.EnableKeyword("PNOISE");
+            _material = new Material(shader);
+            _material.hideFlags = HideFlags.DontSave;
+            GetComponent<Renderer>().material = _material;
+        }
+
+        if (_noiseType == NoiseType.ClassicPerlin)
+        {
+            _material.EnableKeyword("CNOISE");
+            _material.DisableKeyword("PNOISE");
+            _material.DisableKeyword("SNOISE");
+        }
+        else if (_noiseType == NoiseType.PeriodicPerlin)
+        {
+            _material.DisableKeyword("CNOISE");
+            _material.EnableKeyword("PNOISE");
+            _material.DisableKeyword("SNOISE");
         }
         else
         {
-            r.material.EnableKeyword("CNOISE");
-            r.material.DisableKeyword("PNOISE");
+            _material.DisableKeyword("CNOISE");
+            _material.DisableKeyword("PNOISE");
+            _material.EnableKeyword("SNOISE");
         }
 
-        if (dimension == 2)
-        {
-            r.material.EnableKeyword("TWO_DEE");
-            r.material.DisableKeyword("THREE_DEE");
-        }
+        if (_is3D)
+            _material.EnableKeyword("THREED");
         else
-        {
-            r.material.DisableKeyword("TWO_DEE");
-            r.material.EnableKeyword("THREE_DEE");
-        }
+            _material.DisableKeyword("THREED");
+
+        if (_isFractal)
+            _material.EnableKeyword("FRACTAL");
+        else
+            _material.DisableKeyword("FRACTAL");
     }
 }
