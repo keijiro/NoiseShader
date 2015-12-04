@@ -1,4 +1,4 @@
-﻿Shader "Noise/Test/HLSL"
+﻿Shader "NoiseTest/HLSL/NoiseTest"
 {
     CGINCLUDE
 
@@ -10,9 +10,9 @@
 
     #ifdef SNOISE
         #ifdef THREED
-            #include "Noise3D.cginc"
+            #include "SimplexNoise3D.cginc"
         #else
-            #include "Noise2D.cginc"
+            #include "SimplexNoise2D.cginc"
         #endif
     #else
         #ifdef THREED
