@@ -3,7 +3,13 @@
 [ExecuteInEditMode]
 public class NoiseTest : MonoBehaviour
 {
-    public enum NoiseType { ClassicPerlin, PeriodicPerlin, Simplex }
+    public enum NoiseType {
+        ClassicPerlin,
+        PeriodicPerlin,
+        Simplex,
+        SimplexNumericalGrad,
+        SimplexAnalyticalGrad
+    }
 
     [SerializeField]
     NoiseType _noiseType;
@@ -28,33 +34,23 @@ public class NoiseTest : MonoBehaviour
             GetComponent<Renderer>().material = _material;
         }
 
+        _material.shaderKeywords = null;
+
         if (_noiseType == NoiseType.ClassicPerlin)
-        {
             _material.EnableKeyword("CNOISE");
-            _material.DisableKeyword("PNOISE");
-            _material.DisableKeyword("SNOISE");
-        }
         else if (_noiseType == NoiseType.PeriodicPerlin)
-        {
-            _material.DisableKeyword("CNOISE");
             _material.EnableKeyword("PNOISE");
-            _material.DisableKeyword("SNOISE");
-        }
-        else
-        {
-            _material.DisableKeyword("CNOISE");
-            _material.DisableKeyword("PNOISE");
+        else if (_noiseType == NoiseType.Simplex)
             _material.EnableKeyword("SNOISE");
-        }
+        else if (_noiseType == NoiseType.SimplexNumericalGrad)
+            _material.EnableKeyword("SNOISE_NGRAD");
+        else // SimplexAnalyticalGrad
+            _material.EnableKeyword("SNOISE_AGRAD");
 
         if (_is3D)
             _material.EnableKeyword("THREED");
-        else
-            _material.DisableKeyword("THREED");
 
         if (_isFractal)
             _material.EnableKeyword("FRACTAL");
-        else
-            _material.DisableKeyword("FRACTAL");
     }
 }

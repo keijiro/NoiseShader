@@ -20,7 +20,7 @@ vec3 permute(vec3 x) {
   return mod289(((x*34.0)+1.0)*x);
 }
 
-float snoise(vec2 v)
+vec2 snoise_grad(vec2 v)
   {
   const vec4 C = vec4(0.211324865405187,  // (3.0-sqrt(3.0))/6.0
                       0.366025403784439,  // 0.5*(sqrt(3.0)-1.0)
@@ -47,8 +47,9 @@ float snoise(vec2 v)
 		+ i.x + vec3(0.0, i1.x, 1.0 ));
 
   vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x1,x1), dot(x2,x2)), 0.0);
-  m = m*m ;
-  m = m*m ;
+  vec3 m2 = m*m;
+  vec3 m3 = m2*m;
+  vec3 m4 = m2*m2;
 
 // Gradients: 41 points uniformly over a line, mapped onto a diamond.
 // The ring size 17*17 = 289 is close to a multiple of 41 (41*7 = 287)
@@ -60,12 +61,20 @@ float snoise(vec2 v)
 
 // Normalise gradients implicitly by scaling m
 // Approximation of: m *= inversesqrt( a0*a0 + h*h );
-  m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+  //m4 *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+  vec3 norm = 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+  a0 *= norm;
+  h *= norm;
 
 // Compute final noise value at P
   vec3 g;
   g.x = a0.x * x0.x + h.x * x0.y;
   g.y = a0.y * x1.x + h.y * x1.y;
   g.z = a0.z * x2.x + h.z * x2.y;
-  return 130.0 * dot(m, g);
+
+  vec2 grad =
+    -6.0 * m3.x * x0 * g.x + m4.x * vec2(a0.x, h.x) +
+    -6.0 * m3.y * x1 * g.y + m4.y * vec2(a0.y, h.y) +
+    -6.0 * m3.z * x2 * g.z + m4.z * vec2(a0.z, h.z);
+  return 130.0 * grad;
 }
