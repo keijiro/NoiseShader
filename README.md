@@ -1,5 +1,5 @@
-Noise Shaders for Unity
-=======================
+Noise Shader Library for Unity
+==============================
 
 This is a noise shader library for Unity, which is based on the webgl-noise
 GLSL shaders written by Stefan Gustavson and Ahima Arts.
