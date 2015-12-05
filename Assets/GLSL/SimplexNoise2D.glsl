@@ -44,7 +44,7 @@ float snoise(vec2 v)
 
     // Other corners
     vec2 i1;
-    i1.x = x0.x > x0.y;
+    i1.x = step(x0.y, x0.x);
     i1.y = 1.0 - i1.x;
 
     // x1 = x0 - i1  + 1.0 * C.xx;
