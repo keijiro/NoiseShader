@@ -1,7 +1,7 @@
 //
 // Noise Shaders for Unity - https://github.com/keijiro/NoiseShader
 //
-// Original work (webgl-noise) Copyright (C) 2011 Ashima Arts.
+// Original work (webgl-noise) Copyright (C) 2011 Stefan Gustavson
 // Translation and modification was made by Keijiro Takahashi.
 //
 // This shader is based on the webgl-noise GLSL shader. For further details
