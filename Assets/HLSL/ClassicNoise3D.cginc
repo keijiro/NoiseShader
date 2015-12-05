@@ -1,6 +1,13 @@
-// An HLSL variant of Gustavson's webgl-noise.
-// Translated by Keijiro Takahashi
-// For further details, see the original notice below.
+//
+// Noise Shaders for Unity - https://github.com/keijiro/NoiseShader
+//
+// Original work (webgl-noise) Copyright (C) 2011 Ashima Arts.
+// Translation and modification was made by Keijiro Takahashi.
+//
+// This shader is based on the webgl-noise GLSL shader. For further details
+// of the original shader, please see the following description from the
+// original source code.
+//
 
 //
 // GLSL textureless classic 3D noise "cnoise",
@@ -112,7 +119,7 @@ float cnoise(float3 P)
   float3 fade_xyz = fade(Pf0);
   float4 n_z = lerp(float4(n000, n100, n010, n110), float4(n001, n101, n011, n111), fade_xyz.z);
   float2 n_yz = lerp(n_z.xy, n_z.zw, fade_xyz.y);
-  float n_xyz = lerp(n_yz.x, n_yz.y, fade_xyz.x); 
+  float n_xyz = lerp(n_yz.x, n_yz.y, fade_xyz.x);
   return 2.2 * n_xyz;
 }
 
@@ -182,6 +189,6 @@ float pnoise(float3 P, float3 rep)
   float3 fade_xyz = fade(Pf0);
   float4 n_z = lerp(float4(n000, n100, n010, n110), float4(n001, n101, n011, n111), fade_xyz.z);
   float2 n_yz = lerp(n_z.xy, n_z.zw, fade_xyz.y);
-  float n_xyz = lerp(n_yz.x, n_yz.y, fade_xyz.x); 
+  float n_xyz = lerp(n_yz.x, n_yz.y, fade_xyz.x);
   return 2.2 * n_xyz;
 }

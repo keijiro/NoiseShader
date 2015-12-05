@@ -40,7 +40,7 @@ float4 taylorInvSqrt(float4 r)
     return 1.79284291400159 - r * 0.85373472095314;
 }
 
-float snoise(float3 v)
+float3 snoise_grad(float3 v)
 {
     const float2 C = float2(1.0 / 6.0, 1.0 / 3.0);
 
@@ -104,11 +104,15 @@ float snoise(float3 v)
     g2 *= norm.z;
     g3 *= norm.w;
 
-    // Mix final noise value
+    // Compute gradient of noise function at P
     float4 m = max(0.6 - float4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);
-    m = m * m;
-    m = m * m;
-
-    float4 px = float4(dot(x0, g0), dot(x1, g1), dot(x2, g2), dot(x3, g3));
-    return 42.0 * dot(m, px);
+    float4 m2 = m * m;
+    float4 m3 = m2 * m;
+    float4 m4 = m2 * m2;
+    float3 grad =
+      -6.0 * m3.x * x0 * dot(x0, g0) + m4.x * g0 +
+      -6.0 * m3.y * x1 * dot(x1, g1) + m4.y * g1 +
+      -6.0 * m3.z * x2 * dot(x2, g2) + m4.z * g2 +
+      -6.0 * m3.w * x3 * dot(x3, g3) + m4.w * g3;
+    return 42.0 * grad;
 }
