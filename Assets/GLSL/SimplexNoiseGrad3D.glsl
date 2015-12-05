@@ -20,7 +20,7 @@ vec4 taylorInvSqrt(vec4 r)
 }
 
 vec3 snoise_grad(vec3 v)
-{ 
+{
     const vec2 C = vec2(1.0 / 6.0, 1.0 / 3.0);
 
     // First corner
@@ -44,7 +44,7 @@ vec3 snoise_grad(vec3 v)
     i = mod289(i); // Avoid truncation effects in permutation
     vec4 p =
       permute(permute(permute(i.z + vec4(0.0, i1.z, i2.z, 1.0))
-                            + i.y + vec4(0.0, i1.y, i2.y, 1.0)) 
+                            + i.y + vec4(0.0, i1.y, i2.y, 1.0))
                             + i.x + vec4(0.0, i1.x, i2.x, 1.0));
 
     // Gradients: 7x7 points over a square, mapped onto an octahedron.
