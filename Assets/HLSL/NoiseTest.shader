@@ -1,4 +1,4 @@
-﻿Shader "NoiseTest/HLSL/NoiseTest"
+Shader "NoiseTest/HLSL/NoiseTest"
 {
     CGINCLUDE
 
@@ -31,7 +31,7 @@
     v2f_img vert(appdata_base v)
     {
         v2f_img o;
-        o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+        o.pos = UnityObjectToClipPos(v.vertex);
         o.uv = v.texcoord.xy;
         return o;
     }
