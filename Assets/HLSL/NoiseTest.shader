@@ -8,23 +8,17 @@ Shader "NoiseTest/HLSL/NoiseTest"
 
     #include "UnityCG.cginc"
 
-    #if defined(SNOISE) || defined(SNOISE_NGRAD)
+    #if !defined(CNOISE)
         #if defined(THREED)
-            #include "SimplexNoise3D.cginc"
+            #include "SimplexNoise3D.hlsl"
         #else
-            #include "SimplexNoise2D.cginc"
-        #endif
-    #elif defined(SNOISE_AGRAD)
-        #if defined(THREED)
-            #include "SimplexNoiseGrad3D.cginc"
-        #else
-            #include "SimplexNoiseGrad2D.cginc"
+            #include "SimplexNoise2D.hlsl"
         #endif
     #else
         #if defined(THREED)
-            #include "ClassicNoise3D.cginc"
+            #include "ClassicNoise3D.hlsl"
         #else
-            #include "ClassicNoise2D.cginc"
+            #include "ClassicNoise2D.hlsl"
         #endif
     #endif
 
