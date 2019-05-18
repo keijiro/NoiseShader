@@ -1,0 +1,8 @@
+{
+    "name": "com.unity.keijiro.shader.noise",
+    "description": "A noise shader library for Unity",
+    "version": "1.0.0",
+    "unity": "2018.4",
+    "displayName": "Noise Shaders",
+    "dependencies": {}
+}

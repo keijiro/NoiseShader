@@ -8,7 +8,7 @@ Shader "NoiseTest/GLSL/NoiseTest"
             #pragma multi_compile CNOISE PNOISE SNOISE SNOISE_AGRAD SNOISE_NGRAD
             #pragma multi_compile _ THREED
             #pragma multi_compile _ FRACTAL
-            #include "NoiseTest.glslinc"
+            #include "Packages/com.unity.keijiro.shader.noise/Runtime/GLSL/NoiseTest.glslinc"
             ENDGLSL
         }
     }

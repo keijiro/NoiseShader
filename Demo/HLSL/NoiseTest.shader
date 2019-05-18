@@ -10,15 +10,15 @@ Shader "NoiseTest/HLSL/NoiseTest"
 
     #if !defined(CNOISE)
         #if defined(THREED)
-            #include "SimplexNoise3D.hlsl"
+            #include "Packages/com.unity.keijiro.shader.noise/Runtime/HLSL/SimplexNoise3D.hlsl"
         #else
-            #include "SimplexNoise2D.hlsl"
+            #include "Packages/com.unity.keijiro.shader.noise/Runtime/HLSL/SimplexNoise2D.hlsl"
         #endif
     #else
         #if defined(THREED)
-            #include "ClassicNoise3D.hlsl"
+            #include "Packages/com.unity.keijiro.shader.noise/Runtime/HLSL/ClassicNoise3D.hlsl"
         #else
-            #include "ClassicNoise2D.hlsl"
+            #include "Packages/com.unity.keijiro.shader.noise/Runtime/HLSL/ClassicNoise2D.hlsl"
         #endif
     #endif
 
