@@ -1,4 +1,4 @@
-Shader "NoiseTest/HLSL/NoiseTest"
+Shader "Hidden/NoiseTest/HLSL/NoiseTest"
 {
     CGINCLUDE
 

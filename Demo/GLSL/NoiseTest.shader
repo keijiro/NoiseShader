@@ -1,4 +1,4 @@
-Shader "NoiseTest/GLSL/NoiseTest"
+Shader "Hidden/NoiseTest/GLSL/NoiseTest"
 {
     SubShader
     {
