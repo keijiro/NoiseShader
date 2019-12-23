@@ -1,9 +1,6 @@
 ////////////////// K.jpg's Smooth Re-oriented 8-Point BCC Noise //////////////////
 //////////////////// Output: float4(dF/dx, dF/dy, dF/dz, value) ////////////////////
 
-float  bcc8_mod(float  x, float  y) { return x - y * floor(x / y); }
-float2 bcc8_mod(float2 x, float2 y) { return x - y * floor(x / y); }
-float3 bcc8_mod(float3 x, float3 y) { return x - y * floor(x / y); }
 float4 bcc8_mod(float4 x, float4 y) { return x - y * floor(x / y); }
 
 // Borrowed from Stefan Gustavson's noise code
@@ -15,7 +12,7 @@ float4 bcc8_permute(float4 t) {
 float3 bcc8_grad(float hash) {
     
     // Random vertex of a cube, +/- 1 each
-    float3 cube = bcc8_mod(floor(hash / float3(1.0, 2.0, 4.0)), 2.0) * 2.0 - 1.0;
+    float3 cube = frac(floor(hash / float3(1, 2, 4)) * 0.5) * 4 - 1;
     
     // Random edge of the three edges connected to that vertex
     // Also a cuboctahedral vertex
@@ -24,7 +21,7 @@ float3 bcc8_grad(float hash) {
     cuboct *= int3(0, 1, 2) != (int)(hash / 16);
     
     // In a funky way, pick one of the four points on the rhombic face
-    float type = bcc8_mod(floor(hash / 8.0), 2.0);
+    float type = frac(floor(hash / 8) * 0.5) * 2;
     float3 rhomb = (1.0 - type) * cube + type * (cuboct + cross(cube, cuboct));
     
     // Expand it so that the new edges are the same length

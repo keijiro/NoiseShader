@@ -1,9 +1,6 @@
 /////////////// K.jpg's Simplex-like Re-oriented 4-Point BCC Noise ///////////////
 //////////////////// Output: float4(dF/dx, dF/dy, dF/dz, value) ////////////////////
 
-float  bcc4_mod(float  x, float  y) { return x - y * floor(x / y); }
-float2 bcc4_mod(float2 x, float2 y) { return x - y * floor(x / y); }
-float3 bcc4_mod(float3 x, float3 y) { return x - y * floor(x / y); }
 float4 bcc4_mod(float4 x, float4 y) { return x - y * floor(x / y); }
 
 // Inspired by Stefan Gustavson's noise
@@ -15,7 +12,7 @@ float4 bcc4_permute(float4 t) {
 float3 bcc4_grad(float hash) {
     
     // Random vertex of a cube, +/- 1 each
-    float3 cube = bcc4_mod(floor(hash / float3(1.0, 2.0, 4.0)), 2.0) * 2.0 - 1.0;
+    float3 cube = frac(floor(hash / float3(1, 2, 4)) * 0.5) * 4 - 1;
     
     // Random edge of the three edges connected to that vertex
     // Also a cuboctahedral vertex
@@ -24,7 +21,7 @@ float3 bcc4_grad(float hash) {
     cuboct *= int3(0, 1, 2) != (int)(hash / 16);
     
     // In a funky way, pick one of the four points on the rhombic face
-    float type = bcc4_mod(floor(hash / 8.0), 2.0);
+    float type = frac(floor(hash / 8) * 0.5) * 2;
     float3 rhomb = (1.0 - type) * cube + type * (cuboct + cross(cube, cuboct));
     
     // Expand it so that the new edges are the same length
@@ -46,8 +43,8 @@ float4 Bcc4NoiseBase(float3 X) {
     float3 v1 = round(X);
     float3 d1 = X - v1;
     float3 score1 = abs(d1);
-    float3 dir1 = step(max(score1.yzx, score1.zxy), score1);
-    float3 v2 = v1 + dir1 * sign(d1);
+    float3 dir1 = max(score1.yzx, score1.zxy) < score1;
+    float3 v2 = v1 + dir1 * (d1 < 0 ? -1 : 1);
     float3 d2 = X - v2;
     
     // Second half-lattice, closest edge
@@ -55,8 +52,8 @@ float4 Bcc4NoiseBase(float3 X) {
     float3 v3 = round(X2);
     float3 d3 = X2 - v3;
     float3 score2 = abs(d3);
-    float3 dir2 = step(max(score2.yzx, score2.zxy), score2);
-    float3 v4 = v3 + dir2 * sign(d3);
+    float3 dir2 = max(score2.yzx, score2.zxy) < score2;
+    float3 v4 = v3 + dir2 * (d3 < 0 ? -1 : 1);
     float3 d4 = X2 - v4;
     
     // Gradient hashes for the four points, two from each half-lattice
