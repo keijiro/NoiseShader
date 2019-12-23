@@ -1,3 +1,18 @@
+//
+// Noise Shader Library for Unity - https://github.com/keijiro/NoiseShader
+//
+
+//
+// The original shader was created by KdotJPG and released into the public
+// domain (Unlicense). Refer to the following GitHub repository for the details
+// of the original work.
+//
+// https://github.com/KdotJPG/New-Simplex-Style-Gradient-Noise
+//
+
+#ifndef _INCLUDE_BCCNOSIE8_HLSL_
+#define _INCLUDE_BCCNOSIE8_HLSL_
+
 ////////////////// K.jpg's Smooth Re-oriented 8-Point BCC Noise //////////////////
 //////////////////// Output: float4(dF/dx, dF/dy, dF/dz, value) ////////////////////
 
@@ -95,3 +110,5 @@ float4 Bcc8NoisePlaneFirst(float3 X) {
 }
 
 //////////////////////////////// End noise code ////////////////////////////////
+
+#endif
