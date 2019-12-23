@@ -2,24 +2,93 @@ Shader "NoiseTest/HLSL/NoiseTest"
 {
     CGINCLUDE
 
-    #pragma multi_compile CNOISE PNOISE SNOISE SNOISE_AGRAD SNOISE_NGRAD
+    #pragma multi_compile CNOISE PNOISE SNOISE BCCNOISE4 BCCNOISE8
     #pragma multi_compile _ THREED
     #pragma multi_compile _ FRACTAL
+    #pragma multi_compile _ GRAD_NUMERICAL GRAD_ANALYTICAL
 
     #include "UnityCG.cginc"
 
-    #if !defined(CNOISE)
-        #if defined(THREED)
-            #include "SimplexNoise3D.hlsl"
-        #else
-            #include "SimplexNoise2D.hlsl"
-        #endif
-    #else
+    #if defined(CNOISE) || defined(PNOISE)
+
         #if defined(THREED)
             #include "ClassicNoise3D.hlsl"
         #else
             #include "ClassicNoise2D.hlsl"
         #endif
+
+        #define INITIAL_WEIGHT 0.5
+
+        #if defined(GRAD_ANALYTICAL)
+            #define NOISE_FUNC(coord, period) 0
+        #elif defined(CNOISE)
+            #define NOISE_FUNC(coord, period) cnoise(coord)
+        #else // PNOISE
+            #define NOISE_FUNC(coord, period) pnoise(coord, period)
+        #endif
+
+    #endif
+
+    #if defined(SNOISE)
+
+        #if defined(THREED)
+            #include "SimplexNoise3D.hlsl"
+        #else
+            #include "SimplexNoise2D.hlsl"
+        #endif
+
+        #define INITIAL_WEIGHT 0.25
+
+        #if defined(GRAD_ANALYTICAL)
+            #define NOISE_FUNC(coord, period) snoise_grad(coord)
+        #else
+            #define NOISE_FUNC(coord, period) snoise(coord)
+        #endif
+
+    #endif
+
+    #if defined(BCCNOISE4)
+
+        #include "BCCNoise4.hlsl"
+
+        #define INITIAL_WEIGHT 0.25
+
+        #if defined(THREED)
+            #if defined(GRAD_ANALYTICAL)
+                #define NOISE_FUNC(coord, period) (Bcc4NoiseClassic(coord).xyz)
+            #else
+                #define NOISE_FUNC(coord, period) (Bcc4NoiseClassic(coord).w)
+            #endif
+        #else
+            #if defined(GRAD_ANALYTICAL)
+                #define NOISE_FUNC(coord, period) (Bcc4NoisePlaneFirst(float3(coord, 0)).xy)
+            #else
+                #define NOISE_FUNC(coord, period) (Bcc4NoisePlaneFirst(float3(coord, 0)).w)
+            #endif
+        #endif
+
+    #endif
+
+    #if defined(BCCNOISE8)
+
+        #include "BCCNoise8.hlsl"
+
+        #define INITIAL_WEIGHT 0.25
+
+        #if defined(THREED)
+            #if defined(GRAD_ANALYTICAL)
+                #define NOISE_FUNC(coord, period) (Bcc8NoiseClassic(coord).xyz)
+            #else
+                #define NOISE_FUNC(coord, period) (Bcc8NoiseClassic(coord).w)
+            #endif
+        #else
+            #if defined(GRAD_ANALYTICAL)
+                #define NOISE_FUNC(coord, period) (Bcc8NoisePlaneFirst(float3(coord, 0)).xy)
+            #else
+                #define NOISE_FUNC(coord, period) (Bcc8NoisePlaneFirst(float3(coord, 0)).w)
+            #endif
+        #endif
+
     #endif
 
     v2f_img vert(appdata_base v)
@@ -36,7 +105,7 @@ Shader "NoiseTest/HLSL/NoiseTest"
 
         float2 uv = i.uv * 4.0 + float2(0.2, 1) * _Time.y;
 
-        #if defined(SNOISE_AGRAD) || defined(SNOISE_NGRAD)
+        #if defined(GRAD_ANALYTICAL) || defined(GRAD_NUMERICAL)
             #if defined(THREED)
                 float3 o = 0.5;
             #else
@@ -47,12 +116,7 @@ Shader "NoiseTest/HLSL/NoiseTest"
         #endif
 
         float s = 1.0;
-
-        #if defined(SNOISE)
-            float w = 0.25;
-        #else
-            float w = 0.5;
-        #endif
+        float w = INITIAL_WEIGHT;
 
         #ifdef FRACTAL
         for (int i = 0; i < 6; i++)
@@ -66,34 +130,28 @@ Shader "NoiseTest/HLSL/NoiseTest"
                 float2 period = s * 2.0;
             #endif
 
-            #if defined(CNOISE)
-                o += cnoise(coord) * w;
-            #elif defined(PNOISE)
-                o += pnoise(coord, period) * w;
-            #elif defined(SNOISE)
-                o += snoise(coord) * w;
-            #elif defined(SNOISE_AGRAD)
-                o += snoise_grad(coord) * w;
-            #else // SNOISE_NGRAD
+            #if defined(GRAD_NUMERICAL)
                 #if defined(THREED)
-                    float v0 = snoise(coord);
-                    float vx = snoise(coord + float3(epsilon, 0, 0));
-                    float vy = snoise(coord + float3(0, epsilon, 0));
-                    float vz = snoise(coord + float3(0, 0, epsilon));
+                    float v0 = NOISE_FUNC(coord, period);
+                    float vx = NOISE_FUNC(coord + float3(epsilon, 0, 0), period);
+                    float vy = NOISE_FUNC(coord + float3(0, epsilon, 0), period);
+                    float vz = NOISE_FUNC(coord + float3(0, 0, epsilon), period);
                     o += w * float3(vx - v0, vy - v0, vz - v0) / epsilon;
                 #else
-                    float v0 = snoise(coord);
-                    float vx = snoise(coord + float2(epsilon, 0));
-                    float vy = snoise(coord + float2(0, epsilon));
+                    float v0 = NOISE_FUNC(coord, period);
+                    float vx = NOISE_FUNC(coord + float2(epsilon, 0), period);
+                    float vy = NOISE_FUNC(coord + float2(0, epsilon), period);
                     o += w * float2(vx - v0, vy - v0) / epsilon;
                 #endif
+            #else
+                o += NOISE_FUNC(coord, period) * w;
             #endif
 
             s *= 2.0;
             w *= 0.5;
         }
 
-        #if defined(SNOISE_AGRAD) || defined(SNOISE_NGRAD)
+        #if defined(GRAD_ANALYTICAL) || defined(GRAD_NUMERICAL)
             #if defined(THREED)
                 return float4(o, 1);
             #else
