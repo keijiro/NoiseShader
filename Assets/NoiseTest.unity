@@ -214,6 +214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _noiseType: 2
+  _gradientType: 0
   _is3D: 1
   _isFractal: 1
   shader: {fileID: 4800000, guid: 1c7e57924adb04b2aac993f0d9a29a3d, type: 3}
@@ -249,6 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _noiseType: 2
+  _gradientType: 0
   _is3D: 1
   _isFractal: 1
   shader: {fileID: 4800000, guid: d5df9882eb4ac420cb9650be25a83b62, type: 3}

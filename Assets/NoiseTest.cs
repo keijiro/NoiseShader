@@ -3,25 +3,16 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class NoiseTest : MonoBehaviour
 {
-    public enum NoiseType {
-        ClassicPerlin,
-        PeriodicPerlin,
-        Simplex,
-        SimplexNumericalGrad,
-        SimplexAnalyticalGrad
-    }
+    public enum NoiseType
+        { ClassicPerlin, PeriodicPerlin, Simplex, FastSimplex, SuperSimplex }
 
-    [SerializeField]
-    NoiseType _noiseType = NoiseType.ClassicPerlin;
+    public enum GradientType { None, Numerical, Analytical }
 
-    [SerializeField]
-    bool _is3D = false;
-
-    [SerializeField]
-    bool _isFractal = false;
-
-    [SerializeField]
-    Shader shader = null;
+    [SerializeField] NoiseType _noiseType = NoiseType.ClassicPerlin;
+    [SerializeField] GradientType _gradientType = GradientType.None;
+    [SerializeField] bool _is3D = false;
+    [SerializeField] bool _isFractal = false;
+    [SerializeField] Shader shader = null;
 
     Material _material;
 
@@ -42,10 +33,15 @@ public class NoiseTest : MonoBehaviour
             _material.EnableKeyword("PNOISE");
         else if (_noiseType == NoiseType.Simplex)
             _material.EnableKeyword("SNOISE");
-        else if (_noiseType == NoiseType.SimplexNumericalGrad)
-            _material.EnableKeyword("SNOISE_NGRAD");
-        else // SimplexAnalyticalGrad
-            _material.EnableKeyword("SNOISE_AGRAD");
+        else if (_noiseType == NoiseType.FastSimplex)
+            _material.EnableKeyword("BCCNOISE4");
+        else if (_noiseType == NoiseType.SuperSimplex)
+            _material.EnableKeyword("BCCNOISE8");
+
+        if (_gradientType == GradientType.Analytical)
+            _material.EnableKeyword("GRAD_ANALYTICAL");
+        else if (_gradientType == GradientType.Numerical)
+            _material.EnableKeyword("GRAD_NUMERICAL");
 
         if (_is3D)
             _material.EnableKeyword("THREED");
