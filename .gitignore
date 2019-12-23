@@ -1,11 +1,20 @@
-Library/
-Temp/
+# Windows
+Thumbs.db
+Desktop.ini
 
-*.csproj
-*.unityproj
-*.sln
-*.pidb
-*.userprefs
-
-*.swp
+# macOS
 .DS_Store
+
+# Code Editors
+/.idea
+/.vscode
+/*.csproj
+/*.sln
+*.swp
+*.vcxproj.user
+
+# Unity
+/Library
+/Logs
+/Recordings
+/Temp

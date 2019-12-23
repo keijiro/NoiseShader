@@ -12,16 +12,16 @@ public class NoiseTest : MonoBehaviour
     }
 
     [SerializeField]
-    NoiseType _noiseType;
+    NoiseType _noiseType = NoiseType.ClassicPerlin;
 
     [SerializeField]
-    bool _is3D;
+    bool _is3D = false;
 
     [SerializeField]
-    bool _isFractal;
+    bool _isFractal = false;
 
     [SerializeField]
-    Shader shader;
+    Shader shader = null;
 
     Material _material;
 
