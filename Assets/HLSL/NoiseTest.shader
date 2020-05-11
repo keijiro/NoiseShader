@@ -12,9 +12,9 @@ Shader "NoiseTest/HLSL/NoiseTest"
     #if defined(CNOISE) || defined(PNOISE)
 
         #if defined(THREED)
-            #include "ClassicNoise3D.hlsl"
+            #include "Packages/jp.keijiro.noiseshader/Shader/ClassicNoise3D.hlsl"
         #else
-            #include "ClassicNoise2D.hlsl"
+            #include "Packages/jp.keijiro.noiseshader/Shader/ClassicNoise2D.hlsl"
         #endif
 
         #define INITIAL_WEIGHT 0.5
@@ -32,9 +32,9 @@ Shader "NoiseTest/HLSL/NoiseTest"
     #if defined(SNOISE)
 
         #if defined(THREED)
-            #include "SimplexNoise3D.hlsl"
+            #include "Packages/jp.keijiro.noiseshader/Shader/SimplexNoise3D.hlsl"
         #else
-            #include "SimplexNoise2D.hlsl"
+            #include "Packages/jp.keijiro.noiseshader/Shader/SimplexNoise2D.hlsl"
         #endif
 
         #define INITIAL_WEIGHT 0.25
@@ -49,7 +49,7 @@ Shader "NoiseTest/HLSL/NoiseTest"
 
     #if defined(BCCNOISE4)
 
-        #include "BCCNoise4.hlsl"
+        #include "Packages/jp.keijiro.noiseshader/Shader/BCCNoise4.hlsl"
 
         #define INITIAL_WEIGHT 0.25
 
@@ -71,7 +71,7 @@ Shader "NoiseTest/HLSL/NoiseTest"
 
     #if defined(BCCNOISE8)
 
-        #include "BCCNoise8.hlsl"
+        #include "Packages/jp.keijiro.noiseshader/Shader/BCCNoise8.hlsl"
 
         #define INITIAL_WEIGHT 0.25
 

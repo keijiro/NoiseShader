@@ -1,0 +1,13 @@
+{
+  "author": "Keijiro Takahashi",
+  "description": "Noise shader library",
+  "displayName": "NoiseShader",
+  "keywords": [ "unity" ],
+  "license": "SEE LICENSE IN LICENSE",
+  "name": "jp.keijiro.noiseshader",
+  "repository": "github:keijiro/NoiseShader",
+  "unity": "2019.3",
+  "unityRelease": "0f1",
+  "version": "1.0.0"
+}
+
