@@ -1,0 +1,18 @@
+# webgl-noise
+
+The following shaders are originally developed by Stefan Gustavson and Ahima
+Arts. These shaders are distributed under the MIT license. See the file headers
+for details.
+
+- ClassicNoise2D.hlsl
+- ClassicNoise3D.hlsl
+- SimplexNoise2D.hlsl
+- SimplexNoise3D.hlsl
+
+# SuperSimplex & FastSimplex
+
+The following shaders are originally developed by K.jpg and put under the
+public domain (Unlicense). See the file headers for details.
+
+- BCCNoise4.hlsl
+- BCCNoise8.hlsl
