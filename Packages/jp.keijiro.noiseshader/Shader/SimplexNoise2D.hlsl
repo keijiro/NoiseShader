@@ -19,25 +19,10 @@
 //               https://github.com/ashima/webgl-noise
 //
 
-float3 mod289(float3 x)
-{
-    return x - floor(x / 289.0) * 289.0;
-}
+#ifndef _INCLUDE_JP_KEIJIRO_NOISESHADER_SIMPLEX_NOISE_2D_HLSL_
+#define _INCLUDE_JP_KEIJIRO_NOISESHADER_SIMPLEX_NOISE_2D_HLSL_
 
-float2 mod289(float2 x)
-{
-    return x - floor(x / 289.0) * 289.0;
-}
-
-float3 permute(float3 x)
-{
-    return mod289((x * 34.0 + 1.0) * x);
-}
-
-float3 taylorInvSqrt(float3 r)
-{
-    return 1.79284291400159 - 0.85373472095314 * r;
-}
+#include "Packages/jp.keijiro.noiseshader/Shader/Common.hlsl"
 
 float snoise(float2 v)
 {
@@ -60,10 +45,9 @@ float snoise(float2 v)
     float2 x2 = x0 + C.zz;
 
     // Permutations
-    i = mod289(i); // Avoid truncation effects in permutation
-    float3 p =
-      permute(permute(i.y + float3(0.0, i1.y, 1.0))
-                    + i.x + float3(0.0, i1.x, 1.0));
+    i = wglnoise_mod289(i); // Avoid truncation effects in permutation
+    float3 p = wglnoise_permute(    i.y + float3(0.0, i1.y, 1.0));
+           p = wglnoise_permute(p + i.x + float3(0.0, i1.x, 1.0));
 
     float3 m = max(0.5 - float3(dot(x0, x0), dot(x1, x1), dot(x2, x2)), 0.0);
     m = m * m;
@@ -77,7 +61,7 @@ float snoise(float2 v)
     float3 a0 = x - ox;
 
     // Normalise gradients implicitly by scaling m
-    m *= taylorInvSqrt(a0 * a0 + h * h);
+    m *= wglnoise_taylorInvSqrt(a0 * a0 + h * h);
 
     // Compute final noise value at P
     float3 g;
@@ -108,10 +92,9 @@ float3 snoise_grad(float2 v)
     float2 x2 = x0 + C.zz;
 
     // Permutations
-    i = mod289(i); // Avoid truncation effects in permutation
-    float3 p =
-      permute(permute(i.y + float3(0.0, i1.y, 1.0))
-                    + i.x + float3(0.0, i1.x, 1.0));
+    i = wglnoise_mod289(i); // Avoid truncation effects in permutation
+    float3 p = wglnoise_permute(    i.y + float3(0.0, i1.y, 1.0));
+           p = wglnoise_permute(p + i.x + float3(0.0, i1.x, 1.0));
 
     float3 m = max(0.5 - float3(dot(x0, x0), dot(x1, x1), dot(x2, x2)), 0.0);
     float3 m2 = m * m;
@@ -126,7 +109,7 @@ float3 snoise_grad(float2 v)
     float3 a0 = x - ox;
 
     // Normalise gradients
-    float3 norm = taylorInvSqrt(a0 * a0 + h * h);
+    float3 norm = wglnoise_taylorInvSqrt(a0 * a0 + h * h);
     float2 g0 = float2(a0.x, h.x) * norm.x;
     float2 g1 = float2(a0.y, h.y) * norm.y;
     float2 g2 = float2(a0.z, h.z) * norm.z;
@@ -139,3 +122,5 @@ float3 snoise_grad(float2 v)
     float3 px = float3(dot(x0, g0), dot(x1, g1), dot(x2, g2));
     return 130.0 * float3(grad, dot(m4, px));
 }
+
+#endif

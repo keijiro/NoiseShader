@@ -20,25 +20,10 @@
 //               https://github.com/ashima/webgl-noise
 //
 
-float3 mod289(float3 x)
-{
-    return x - floor(x / 289.0) * 289.0;
-}
+#ifndef _INCLUDE_JP_KEIJIRO_NOISESHADER_SIMPLEX_NOISE_3D_HLSL_
+#define _INCLUDE_JP_KEIJIRO_NOISESHADER_SIMPLEX_NOISE_3D_HLSL_
 
-float4 mod289(float4 x)
-{
-    return x - floor(x / 289.0) * 289.0;
-}
-
-float4 permute(float4 x)
-{
-    return mod289((x * 34.0 + 1.0) * x);
-}
-
-float4 taylorInvSqrt(float4 r)
-{
-    return 1.79284291400159 - r * 0.85373472095314;
-}
+#include "Packages/jp.keijiro.noiseshader/Shader/Common.hlsl"
 
 float snoise(float3 v)
 {
@@ -62,11 +47,10 @@ float snoise(float3 v)
     float3 x3 = x0 - 0.5;
 
     // Permutations
-    i = mod289(i); // Avoid truncation effects in permutation
-    float4 p =
-      permute(permute(permute(i.z + float4(0.0, i1.z, i2.z, 1.0))
-                            + i.y + float4(0.0, i1.y, i2.y, 1.0))
-                            + i.x + float4(0.0, i1.x, i2.x, 1.0));
+    i = wglnoise_mod289(i); // Avoid truncation effects in permutation
+    float4 p = wglnoise_permute(    i.z + float4(0.0, i1.z, i2.z, 1.0));
+           p = wglnoise_permute(p + i.y + float4(0.0, i1.y, i2.y, 1.0));
+           p = wglnoise_permute(p + i.x + float4(0.0, i1.x, i2.x, 1.0));
 
     // Gradients: 7x7 points over a square, mapped onto an octahedron.
     // The ring size 17*17 = 289 is close to a multiple of 49 (49*6 = 294)
@@ -98,14 +82,16 @@ float snoise(float3 v)
     float3 g3 = float3(a1.zw, h.w);
 
     // Normalise gradients
-    float4 norm = taylorInvSqrt(float4(dot(g0, g0), dot(g1, g1), dot(g2, g2), dot(g3, g3)));
+    float4 norm = wglnoise_taylorInvSqrt
+      (float4(dot(g0, g0), dot(g1, g1), dot(g2, g2), dot(g3, g3)));
     g0 *= norm.x;
     g1 *= norm.y;
     g2 *= norm.z;
     g3 *= norm.w;
 
     // Mix final noise value
-    float4 m = max(0.6 - float4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);
+    float4 m = float4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3));
+    m = max(0.6 - m, 0.0);
     m = m * m;
     m = m * m;
 
@@ -135,11 +121,10 @@ float4 snoise_grad(float3 v)
     float3 x3 = x0 - 0.5;
 
     // Permutations
-    i = mod289(i); // Avoid truncation effects in permutation
-    float4 p =
-      permute(permute(permute(i.z + float4(0.0, i1.z, i2.z, 1.0))
-                            + i.y + float4(0.0, i1.y, i2.y, 1.0))
-                            + i.x + float4(0.0, i1.x, i2.x, 1.0));
+    i = wglnoise_mod289(i); // Avoid truncation effects in permutation
+    float4 p = wglnoise_permute(    i.z + float4(0.0, i1.z, i2.z, 1.0));
+           p = wglnoise_permute(p + i.y + float4(0.0, i1.y, i2.y, 1.0));
+           p = wglnoise_permute(p + i.x + float4(0.0, i1.x, i2.x, 1.0));
 
     // Gradients: 7x7 points over a square, mapped onto an octahedron.
     // The ring size 17*17 = 289 is close to a multiple of 49 (49*6 = 294)
@@ -171,14 +156,16 @@ float4 snoise_grad(float3 v)
     float3 g3 = float3(a1.zw, h.w);
 
     // Normalise gradients
-    float4 norm = taylorInvSqrt(float4(dot(g0, g0), dot(g1, g1), dot(g2, g2), dot(g3, g3)));
+    float4 norm = wglnoise_taylorInvSqrt
+      (float4(dot(g0, g0), dot(g1, g1), dot(g2, g2), dot(g3, g3)));
     g0 *= norm.x;
     g1 *= norm.y;
     g2 *= norm.z;
     g3 *= norm.w;
 
     // Compute noise and gradient at P
-    float4 m = max(0.6 - float4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);
+    float4 m = float4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3));
+    m = max(0.6 - m, 0);
     float4 m2 = m * m;
     float4 m3 = m2 * m;
     float4 m4 = m2 * m2;
@@ -190,3 +177,5 @@ float4 snoise_grad(float3 v)
     float4 px = float4(dot(x0, g0), dot(x1, g1), dot(x2, g2), dot(x3, g3));
     return 42.0 * float4(grad, dot(m4, px));
 }
+
+#endif
