@@ -46,14 +46,4 @@ float4 wglnoise_permute(float4 x)
     return wglnoise_mod289((x * 34 + 1) * x);
 }
 
-float3 wglnoise_taylorInvSqrt(float3 r)
-{
-    return 1.79284291400159 - 0.85373472095314 * r;
-}
-
-float4 wglnoise_taylorInvSqrt(float4 r)
-{
-    return 1.79284291400159 - 0.85373472095314 * r;
-}
-
 #endif
