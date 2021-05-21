@@ -28,75 +28,51 @@
 
 #include "Packages/jp.keijiro.noiseshader/Shader/Common.hlsl"
 
-// Classic Perlin noise
-float cnoise(float2 P)
+// Classic Perlin noise with detailed parameters
+float cnoise_if(float2 pi0, float2 pf0, float2 pi1, float2 pf1)
 {
-  float4 Pi = floor(P.xyxy) + float4(0, 0, 1, 1);
-  float4 Pf = frac (P.xyxy) - float4(0, 0, 1, 1);
+    pi0 = wglnoise_mod289(pi0); // To avoid truncation effects in permutation
+    pi1 = wglnoise_mod289(pi1);
 
-  Pi = wglnoise_mod289(Pi); // To avoid truncation effects in permutation
+    float4 ix = float2(pi0.x, pi1.x).xyxy;
+    float4 iy = float2(pi0.y, pi1.y).xxyy;
+    float4 fx = float2(pf0.x, pf1.x).xyxy;
+    float4 fy = float2(pf0.y, pf1.y).xxyy;
 
-  float4 ix = Pi.xzxz;
-  float4 iy = Pi.yyww;
-  float4 fx = Pf.xzxz;
-  float4 fy = Pf.yyww;
+    float4 i = wglnoise_permute(wglnoise_permute(ix) + iy);
 
-  float4 i = wglnoise_permute(wglnoise_permute(ix) + iy);
+    float4 phi = i / 41 * 3.14159265359 * 2;
+    float2 g00 = float2(cos(phi.x), sin(phi.x));
+    float2 g10 = float2(cos(phi.y), sin(phi.y));
+    float2 g01 = float2(cos(phi.z), sin(phi.z));
+    float2 g11 = float2(cos(phi.w), sin(phi.w));
 
-  float4 x = lerp(-1, 1, frac(i / 41));
-  float4 h = abs(x) - 0.5;
-  float4 a0 = x - floor(x + 0.5);
+    float n00 = dot(g00, float2(fx.x, fy.x));
+    float n10 = dot(g10, float2(fx.y, fy.y));
+    float n01 = dot(g01, float2(fx.z, fy.z));
+    float n11 = dot(g11, float2(fx.w, fy.w));
 
-  float2 g00 = normalize(float2(a0.x, h.x));
-  float2 g10 = normalize(float2(a0.y, h.y));
-  float2 g01 = normalize(float2(a0.z, h.z));
-  float2 g11 = normalize(float2(a0.w, h.w));
+    float2 fade_xy = wglnoise_fade(pf0);
+    float2 n_x = lerp(float2(n00, n01), float2(n10, n11), fade_xy.x);
+    float n_xy = lerp(n_x.x, n_x.y, fade_xy.y);
+    return n_xy;
+}
 
-  float n00 = dot(g00, float2(fx.x, fy.x));
-  float n10 = dot(g10, float2(fx.y, fy.y));
-  float n01 = dot(g01, float2(fx.z, fy.z));
-  float n11 = dot(g11, float2(fx.w, fy.w));
-
-  float2 fade_xy = wglnoise_fade(Pf.xy);
-  float2 n_x = lerp(float2(n00, n01), float2(n10, n11), fade_xy.x);
-  float n_xy = lerp(n_x.x, n_x.y, fade_xy.y);
-  return n_xy;
+// Classic Perlin noise
+float cnoise(float2 p)
+{
+    float2 i = floor(p);
+    float2 f = frac(p);
+    return cnoise_if(i, f, i + 1, f - 1);
 }
 
 // Classic Perlin noise, periodic variant
-float pnoise(float2 P, float2 rep)
+float pnoise(float2 p, float2 rep)
 {
-  float4 Pi = floor(P.xyxy) + float4(0, 0, 1, 1);
-  float4 Pf = frac (P.xyxy) - float4(0, 0, 1, 1);
-
-  Pi = wglnoise_mod(Pi, rep.xyxy); // To create noise with explicit period
-  Pi = wglnoise_mod289(Pi);        // To avoid truncation effects in permutation
-
-  float4 ix = Pi.xzxz;
-  float4 iy = Pi.yyww;
-  float4 fx = Pf.xzxz;
-  float4 fy = Pf.yyww;
-
-  float4 i = wglnoise_permute(wglnoise_permute(ix) + iy);
-
-  float4 x = lerp(-1, 1, frac(i / 41));
-  float4 h = abs(x) - 0.5;
-  float4 a0 = x - floor(x + 0.5);
-
-  float2 g00 = normalize(float2(a0.x, h.x));
-  float2 g10 = normalize(float2(a0.y, h.y));
-  float2 g01 = normalize(float2(a0.z, h.z));
-  float2 g11 = normalize(float2(a0.w, h.w));
-
-  float n00 = dot(g00, float2(fx.x, fy.x));
-  float n10 = dot(g10, float2(fx.y, fy.y));
-  float n01 = dot(g01, float2(fx.z, fy.z));
-  float n11 = dot(g11, float2(fx.w, fy.w));
-
-  float2 fade_xy = wglnoise_fade(Pf.xy);
-  float2 n_x = lerp(float2(n00, n01), float2(n10, n11), fade_xy.x);
-  float n_xy = lerp(n_x.x, n_x.y, fade_xy.y);
-  return n_xy;
+    float2 i0 = wglnoise_mod(floor(p), rep);
+    float2 i1 = wglnoise_mod(i0 + 1, rep);
+    float2 f = frac(p);
+    return cnoise_if(i0, f, i1, f - 1);
 }
 
 #endif
