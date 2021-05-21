@@ -64,19 +64,19 @@ float4 SimplexNoiseGrad(float3 v)
 
     // Compute noise and gradient at P
     float4 m  = float4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3));
-    float4 gx = float4(dot(g0, x0), dot(g1, x1), dot(g2, x2), dot(g3, x3));
+    float4 px = float4(dot(g0, x0), dot(g1, x1), dot(g2, x2), dot(g3, x3));
 
     m = max(0.5 - m, 0);
     float4 m3 = m * m * m;
     float4 m4 = m * m3;
 
-    float4 temp = -8 * m3 * gx;
+    float4 temp = -8 * m3 * px;
     float3 grad = m4.x * g0 + temp.x * x0 +
                   m4.y * g1 + temp.y * x1 +
                   m4.z * g2 + temp.z * x2 +
                   m4.w * g3 + temp.w * x3;
 
-    return 105.0 * float4(grad, dot(m4, gx));
+    return 108 * float4(grad, dot(m4, px));
 }
 
 float SimplexNoise(float3 v)
