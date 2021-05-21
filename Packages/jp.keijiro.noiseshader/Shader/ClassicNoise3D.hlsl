@@ -29,7 +29,7 @@
 #include "Packages/jp.keijiro.noiseshader/Shader/Common.hlsl"
 
 // Classic Perlin noise with detailed parameters
-float cnoise_if(float3 pi0, float3 pf0, float3 pi1, float3 pf1)
+float ClassicNoise_if(float3 pi0, float3 pf0, float3 pi1, float3 pf1)
 {
     pi0 = wglnoise_mod289(pi0);
     pi1 = wglnoise_mod289(pi1);
@@ -82,24 +82,24 @@ float cnoise_if(float3 pi0, float3 pf0, float3 pi1, float3 pf1)
                       float4(n001, n101, n011, n111), fade_xyz.z);
     float2 n_yz = lerp(n_z.xy, n_z.zw, fade_xyz.y);
     float n_xyz = lerp(n_yz.x, n_yz.y, fade_xyz.x);
-    return n_xyz;
+    return 1.46 * n_xyz;
 }
 
 // Classic Perlin noise
-float cnoise(float3 p)
+float ClassicNoise(float3 p)
 {
     float3 i = floor(p);
     float3 f = frac(p);
-    return cnoise_if(i, f, i + 1, f - 1);
+    return ClassicNoise_if(i, f, i + 1, f - 1);
 }
 
 // Classic Perlin noise, periodic variant
-float pnoise(float3 p, float3 rep)
+float PeriodicNoise(float3 p, float3 rep)
 {
     float3 i0 = wglnoise_mod(floor(p), rep);
     float3 i1 = wglnoise_mod(i0 + 1, rep);
     float3 f = frac(p);
-    return cnoise_if(i0, f, i1, f - 1);
+    return ClassicNoise_if(i0, f, i1, f - 1);
 }
 
 #endif

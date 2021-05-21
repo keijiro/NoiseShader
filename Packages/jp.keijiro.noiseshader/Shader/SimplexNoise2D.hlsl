@@ -63,7 +63,7 @@ float3 SimplexNoiseGrad(float2 v)
                   m4.y * g1 + temp.y * x1 +
                   m4.z * g2 + temp.z * x2;
 
-    return 102 * float3(grad, dot(m4, px));
+    return 99.2 * float3(grad, dot(m4, px));
 }
 
 float SimplexNoise(float2 v)

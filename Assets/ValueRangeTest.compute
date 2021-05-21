@@ -1,0 +1,121 @@
+#pragma kernel Classic2D
+#pragma kernel Classic3D
+#pragma kernel Simplex2D
+#pragma kernel Simplex3D
+
+#include "Packages/jp.keijiro.noiseshader/Shader/ClassicNoise2D.hlsl"
+#include "Packages/jp.keijiro.noiseshader/Shader/ClassicNoise3D.hlsl"
+#include "Packages/jp.keijiro.noiseshader/Shader/SimplexNoise2D.hlsl"
+#include "Packages/jp.keijiro.noiseshader/Shader/SimplexNoise3D.hlsl"
+
+// A single iteration of Bob Jenkins' One-At-A-Time hashing algorithm.
+uint JenkinsHash(uint x)
+{
+    x += (x << 10u);
+    x ^= (x >>  6u);
+    x += (x <<  3u);
+    x ^= (x >> 11u);
+    x += (x << 15u);
+    return x;
+}
+
+// Construct a float with half-open range [0, 1) using low 23 bits.
+// All zeros yields 0, all ones yields the next smallest representable value below 1.
+float ConstructFloat(int m) {
+    const int ieeeMantissa = 0x007FFFFF; // Binary FP32 mantissa bitmask
+    const int ieeeOne      = 0x3F800000; // 1.0 in FP32 IEEE
+
+    m &= ieeeMantissa;                   // Keep only mantissa bits (fractional part)
+    m |= ieeeOne;                        // Add fractional part to 1.0
+
+    float  f = asfloat(m);               // Range [1, 2)
+    return f - 1;                        // Range [0, 1)
+}
+
+float ConstructFloat(uint m)
+{
+    return ConstructFloat(asint(m));
+}
+
+// Pseudo-random value in half-open range [0, 1). The distribution is reasonably uniform.
+// Ref: https://stackoverflow.com/a/17479300
+float GenerateHashedRandomFloat(uint x)
+{
+    return ConstructFloat(JenkinsHash(x));
+}
+
+float2 RandomFloat2(uint thread_id, uint index)
+{
+    uint offset = thread_id << 26;
+    float x = GenerateHashedRandomFloat(offset + index * 2u + 0u);
+    float y = GenerateHashedRandomFloat(offset + index * 2u + 1u);
+    return float2(x, y) * 2000 - 1000;
+}
+
+float3 RandomFloat3(uint thread_id, uint index)
+{
+    uint offset = thread_id << 26;
+    float x = GenerateHashedRandomFloat(offset + index * 4u + 0u);
+    float y = GenerateHashedRandomFloat(offset + index * 4u + 1u);
+    float z = GenerateHashedRandomFloat(offset + index * 4u + 2u);
+    return float3(x, y, z) * 2000 - 1000;
+}
+
+RWStructuredBuffer<float> _Output;
+
+#define THREAD_COUNT 64
+#define ITERATION (1u << 24)
+
+groupshared float shared_array[THREAD_COUNT];
+
+float GetSharedArrayMax()
+{
+    float maxval = shared_array[0];
+    for (uint i = 1; i < THREAD_COUNT; i++)
+        maxval = max(maxval, shared_array[i]);
+    return maxval;
+}
+
+[numthreads(THREAD_COUNT, 1, 1)]
+void Classic2D(uint id : SV_DispatchThreadID)
+{
+    float maxval = 0;
+    for (uint i = 0; i < ITERATION; i++)
+        maxval = max(maxval, abs(ClassicNoise(RandomFloat2(id, i))));
+    shared_array[id] = maxval;
+    GroupMemoryBarrierWithGroupSync();
+    if (id.x == 0) _Output[0] = GetSharedArrayMax();
+}
+
+[numthreads(THREAD_COUNT, 1, 1)]
+void Classic3D(uint id : SV_DispatchThreadID)
+{
+    float maxval = 0;
+    for (uint i = 0; i < ITERATION; i++)
+        maxval = max(maxval, abs(ClassicNoise(RandomFloat3(id, i))));
+    shared_array[id] = maxval;
+    GroupMemoryBarrierWithGroupSync();
+    if (id.x == 0) _Output[0] = GetSharedArrayMax();
+}
+
+[numthreads(THREAD_COUNT, 1, 1)]
+void Simplex2D(uint id : SV_DispatchThreadID)
+{
+    float maxval = 0;
+    for (uint i = 0; i < ITERATION; i++)
+        maxval = max(maxval, abs(SimplexNoise(RandomFloat2(id, i))));
+    shared_array[id] = maxval;
+    GroupMemoryBarrierWithGroupSync();
+    if (id.x == 0) _Output[0] = GetSharedArrayMax();
+}
+
+[numthreads(THREAD_COUNT, 1, 1)]
+void Simplex3D(uint id : SV_DispatchThreadID)
+{
+    float maxval = 0;
+    for (uint i = 0; i < ITERATION; i++)
+        maxval = max(maxval, abs(SimplexNoise(RandomFloat3(id, i))));
+    shared_array[id] = maxval;
+    GroupMemoryBarrierWithGroupSync();
+    if (id.x == 0) _Output[0] = GetSharedArrayMax();
+}
