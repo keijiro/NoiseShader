@@ -1,23 +1,19 @@
 Noise Shader Library for Unity
 ==============================
 
-This is a Unity shader library that contains several gradient noise functions.
+**NoiseShader** is a Unity package that provides 2D/3D gradient noise
+functions written in the shader language. These functions are ported from the
+[webgl-noise] library that is originally written by Stefan Gustavson and Ahima
+Arts.
 
-From webgl-noise written by Stefan Gustavson and Ahima Arts:
+[webgl-noise]: https://github.com/ashima/webgl-noise
 
-https://github.com/ashima/webgl-noise
+At the moment, it contains the following functions:
 
 - Classic Perlin noise (2D/3D)
 - Periodic Perlin noise (2D/3D)
 - Simplex noise (2D/3D)
 - Analytical derivatives of simplex noise (2D/3D)
-
-From K.jpg's SuperSimplex & FastSimplex repository:
-
-https://github.com/KdotJPG/New-Simplex-Style-Gradient-Noise
-
-- SuperSimplexNoise (3D)
-- FastSimplexStyleNoise (3D)
 
 How To Install
 --------------
@@ -40,7 +36,7 @@ To the `scopedRegistries` section:
 To the `dependencies` section:
 
 ```
-"jp.keijiro.noiseshader": "1.0.0"
+"jp.keijiro.noiseshader": "2.0.0"
 ```
 
 After changes, the manifest file should look like below:
@@ -55,6 +51,6 @@ After changes, the manifest file should look like below:
     }
   ],
   "dependencies": {
-    "jp.keijiro.noiseshader": "1.0.0",
+    "jp.keijiro.noiseshader": "2.0.0",
 ...
 ```

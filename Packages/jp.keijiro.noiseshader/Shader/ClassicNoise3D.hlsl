@@ -1,15 +1,4 @@
 //
-// Noise Shader Library for Unity - https://github.com/keijiro/NoiseShader
-//
-// Original work (webgl-noise) Copyright (C) 2011 Stefan Gustavson
-// Translation and modification was made by Keijiro Takahashi.
-//
-// This shader is based on the webgl-noise GLSL shader. For further details
-// of the original shader, please see the following description from the
-// original source code.
-//
-
-//
 // GLSL textureless classic 3D noise "cnoise",
 // with an RSL-style periodic variant "pnoise".
 // Author:  Stefan Gustavson (stefan.gustavson@liu.se)
@@ -28,8 +17,7 @@
 
 #include "Packages/jp.keijiro.noiseshader/Shader/Common.hlsl"
 
-// Classic Perlin noise with detailed parameters
-float ClassicNoise_if(float3 pi0, float3 pf0, float3 pi1, float3 pf1)
+float ClassicNoise_impl(float3 pi0, float3 pf0, float3 pi1, float3 pf1)
 {
     pi0 = wglnoise_mod289(pi0);
     pi1 = wglnoise_mod289(pi1);
@@ -90,7 +78,7 @@ float ClassicNoise(float3 p)
 {
     float3 i = floor(p);
     float3 f = frac(p);
-    return ClassicNoise_if(i, f, i + 1, f - 1);
+    return ClassicNoise_impl(i, f, i + 1, f - 1);
 }
 
 // Classic Perlin noise, periodic variant
@@ -99,7 +87,7 @@ float PeriodicNoise(float3 p, float3 rep)
     float3 i0 = wglnoise_mod(floor(p), rep);
     float3 i1 = wglnoise_mod(i0 + 1, rep);
     float3 f = frac(p);
-    return ClassicNoise_if(i0, f, i1, f - 1);
+    return ClassicNoise_impl(i0, f, i1, f - 1);
 }
 
 #endif
