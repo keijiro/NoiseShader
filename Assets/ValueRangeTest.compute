@@ -49,7 +49,7 @@ float2 RandomFloat2(uint thread_id, uint index)
     uint offset = thread_id << 26;
     float x = GenerateHashedRandomFloat(offset + index * 2u + 0u);
     float y = GenerateHashedRandomFloat(offset + index * 2u + 1u);
-    return float2(x, y) * 2000 - 1000;
+    return float2(x, y) * 600 - 300;
 }
 
 float3 RandomFloat3(uint thread_id, uint index)
@@ -58,7 +58,7 @@ float3 RandomFloat3(uint thread_id, uint index)
     float x = GenerateHashedRandomFloat(offset + index * 4u + 0u);
     float y = GenerateHashedRandomFloat(offset + index * 4u + 1u);
     float z = GenerateHashedRandomFloat(offset + index * 4u + 2u);
-    return float3(x, y, z) * 2000 - 1000;
+    return float3(x, y, z) * 600 - 300;
 }
 
 RWStructuredBuffer<float> _Output;

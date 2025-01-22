@@ -29,6 +29,8 @@ float ClassicNoise_impl(float2 pi0, float2 pf0, float2 pi1, float2 pf1)
 
     float4 i = wglnoise_permute(wglnoise_permute(ix) + iy);
 
+    // Gradients: 41 points uniformly over a unit circle.
+    // The ring size 17*17 = 289 is close to a multiple of 41 (41*7 = 287)
     float4 phi = i / 41 * 3.14159265359 * 2;
     float2 g00 = float2(cos(phi.x), sin(phi.x));
     float2 g10 = float2(cos(phi.y), sin(phi.y));
@@ -43,7 +45,7 @@ float ClassicNoise_impl(float2 pi0, float2 pf0, float2 pi1, float2 pf1)
     float2 fade_xy = wglnoise_fade(pf0);
     float2 n_x = lerp(float2(n00, n01), float2(n10, n11), fade_xy.x);
     float n_xy = lerp(n_x.x, n_x.y, fade_xy.y);
-    return 1.44 * n_xy;
+    return 1.41421356237 * n_xy;
 }
 
 // Classic Perlin noise
