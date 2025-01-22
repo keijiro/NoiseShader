@@ -53,12 +53,12 @@ float4 wglnoise_mod289(float4 x)
 
 float3 wglnoise_permute(float3 x)
 {
-    return wglnoise_mod289((x * 34 + 1) * x);
+    return wglnoise_mod289((x * 34 + 10) * x);
 }
 
 float4 wglnoise_permute(float4 x)
 {
-    return wglnoise_mod289((x * 34 + 1) * x);
+    return wglnoise_mod289((x * 34 + 10) * x);
 }
 
 #endif
