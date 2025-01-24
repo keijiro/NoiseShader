@@ -1,70 +1,59 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/jp.keijiro.klak.ui-toolkit-assets/Runtime/Themes/Tena.uss?fileID=7433441132597879392&amp;guid=2bbbc33e8b2834f0ab25f4d4ef52c082&amp;type=3#Tena" />
     <Style src="project://database/Assets/Catalog/Catalog.uss?fileID=7433441132597879392&amp;guid=95daab4ff73284409a6d4766c6c9bb31&amp;type=3#Catalog" />
-    <engine:VisualElement name="root" data-source-type="ImageGeneratorController, Assembly-CSharp">
-        <engine:VisualElement name="views" style="margin-top: 8px; margin-right: 0; margin-bottom: 0; margin-left: 30px;">
-            <engine:Label text="Classic Noise" class="section-label" />
-            <engine:VisualElement name="row-classic" class="image-row">
-                <engine:VisualElement name="container-classic-2d" class="cell-container">
-                    <engine:Label text="2D" class="cell-label" />
-                    <engine:VisualElement name="cell-classic-2d" class="image-cell">
-                        <engine:VisualElement name="image-classic-2d" class="image-rect">
-                            <engine:Label text="Base" class="in-image-label" />
-                        </engine:VisualElement>
-                        <engine:VisualElement name="image-classic-fractal-2d" class="image-rect">
-                            <engine:Label text="Fractal" class="in-image-label" />
-                        </engine:VisualElement>
+    <engine:VisualElement name="root" data-source-type="ImageGeneratorController, Assembly-CSharp" style="flex-direction: row; flex-grow: 1;">
+        <engine:VisualElement name="views" style="flex-grow: 1;">
+            <engine:VisualElement name="classic-noise-panel" class="panel" style="flex-grow: 1;">
+                <engine:Label text="Classic Noise" class="header-label" />
+                <Klak.UIToolkit.AspectRatioElement width="4" height="1" name="classic-row" style="flex-direction: row; flex-grow: 1;">
+                    <engine:VisualElement name="image-classic-2d" class="image-rect">
+                        <engine:Label text="2D" class="image-label" style="position: absolute; top: 0; bottom: auto;" />
+                        <engine:Label text="Base" class="image-label" />
                     </engine:VisualElement>
-                </engine:VisualElement>
-                <engine:VisualElement name="container-classic-3d" class="cell-container">
-                    <engine:Label text="3D" class="cell-label" />
-                    <engine:VisualElement name="cell-classic-3d" class="image-cell">
-                        <engine:VisualElement name="image-classic-3d" class="image-rect">
-                            <engine:Label text="Base" class="in-image-label" />
-                        </engine:VisualElement>
-                        <engine:VisualElement name="image-classic-fractal-3d" class="image-rect">
-                            <engine:Label text="Fractal" class="in-image-label" />
-                        </engine:VisualElement>
+                    <engine:VisualElement name="image-classic-fractal-2d" class="image-rect">
+                        <engine:Label text="Fractal" class="image-label" />
                     </engine:VisualElement>
-                </engine:VisualElement>
+                    <engine:VisualElement name="image-classic-3d" class="image-rect">
+                        <engine:Label text="3D" class="cell-label image-label" style="position: absolute; top: 0; left: 0; bottom: auto;" />
+                        <engine:Label text="Base" class="image-label" />
+                    </engine:VisualElement>
+                    <engine:VisualElement name="image-classic-fractal-3d" class="image-rect">
+                        <engine:Label text="Fractal" class="image-label" />
+                    </engine:VisualElement>
+                </Klak.UIToolkit.AspectRatioElement>
             </engine:VisualElement>
-            <engine:Label text="Simplex Noise" class="section-label" />
-            <engine:VisualElement name="row-simplex" class="image-row">
-                <engine:VisualElement name="container-simplex-2d" class="cell-container">
-                    <engine:Label text="2D" class="cell-label" />
-                    <engine:VisualElement name="cell-simplex-2d" class="image-cell">
-                        <engine:VisualElement name="image-simplex-2d" class="image-rect">
-                            <engine:Label text="Base" class="in-image-label" />
-                        </engine:VisualElement>
-                        <engine:VisualElement name="image-simplex-fractal-2d" class="image-rect">
-                            <engine:Label text="Fractal" class="in-image-label" />
-                        </engine:VisualElement>
+            <engine:VisualElement name="simplex-noise-panel" class="panel" style="flex-grow: 1;">
+                <engine:Label text="Simplex Noise" class="header-label" />
+                <Klak.UIToolkit.AspectRatioElement width="4" height="1" name="simplex-row" style="flex-direction: row; flex-grow: 1;">
+                    <engine:VisualElement name="image-simplex-2d" class="image-rect">
+                        <engine:Label text="2D" class="image-label" style="position: absolute; top: 0; bottom: auto;" />
+                        <engine:Label text="Base" class="image-label" />
                     </engine:VisualElement>
-                </engine:VisualElement>
-                <engine:VisualElement name="container-simplex-3d" class="cell-container">
-                    <engine:Label text="3D" class="cell-label" />
-                    <engine:VisualElement name="cell-simplex-3d" class="image-cell">
-                        <engine:VisualElement name="image-simplex-3d" class="image-rect">
-                            <engine:Label text="Base" class="in-image-label" />
-                        </engine:VisualElement>
-                        <engine:VisualElement name="image-simplex-fractal-3d" class="image-rect">
-                            <engine:Label text="Fractal" class="in-image-label" />
-                        </engine:VisualElement>
+                    <engine:VisualElement name="image-simplex-fractal-2d" class="image-rect">
+                        <engine:Label text="Fractal" class="image-label" />
                     </engine:VisualElement>
-                </engine:VisualElement>
+                    <engine:VisualElement name="image-simplex-3d" class="image-rect">
+                        <engine:Label text="3D" class="cell-label image-label" style="position: absolute; top: 0; left: 0; bottom: auto;" />
+                        <engine:Label text="Base" class="image-label" />
+                    </engine:VisualElement>
+                    <engine:VisualElement name="image-simplex-fractal-3d" class="image-rect">
+                        <engine:Label text="Fractal" class="image-label" />
+                    </engine:VisualElement>
+                </Klak.UIToolkit.AspectRatioElement>
             </engine:VisualElement>
-            <engine:Label text="Parameters" class="section-label" />
-            <engine:VisualElement name="row-controllers" style="width: 400px;">
-                <engine:Toggle label="Animation" value="false">
-                    <Bindings>
-                        <engine:DataBinding property="value" data-source-path="_Animation_k__BackingField" binding-mode="TwoWay" />
-                    </Bindings>
-                </engine:Toggle>
-                <engine:Slider label="Frequency" value="4" high-value="20" low-value="1">
-                    <Bindings>
-                        <engine:DataBinding property="value" data-source-path="_Frequency_k__BackingField" binding-mode="TwoWay" />
-                    </Bindings>
-                </engine:Slider>
-            </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement name="options" class="panel" style="flex-grow: 0; align-self: center;">
+            <engine:Label text="Options" class="header-label" />
+            <engine:Toggle label="Animation" value="false">
+                <Bindings>
+                    <engine:DataBinding property="value" data-source-path="_Animation_k__BackingField" binding-mode="TwoWay" />
+                </Bindings>
+            </engine:Toggle>
+            <engine:FloatField label="Frequency" value="4">
+                <Bindings>
+                    <engine:DataBinding property="value" data-source-path="_Frequency_k__BackingField" binding-mode="TwoWay" />
+                </Bindings>
+            </engine:FloatField>
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

@@ -132,6 +132,15 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "jp.keijiro.klak.ui-toolkit-assets": {
+      "version": "0.0.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.uielements": "1.0.0"
+      },
+      "url": "https://registry.npmjs.com"
+    },
     "jp.keijiro.noiseshader": {
       "version": "file:jp.keijiro.noiseshader",
       "depth": 0,

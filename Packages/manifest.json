@@ -1,6 +1,16 @@
 {
   "dependencies": {
     "com.unity.render-pipelines.universal": "17.0.3",
-    "com.unity.modules.uielements": "1.0.0"
-  }
+    "com.unity.modules.uielements": "1.0.0",
+    "jp.keijiro.klak.ui-toolkit-assets": "0.0.1"
+  },
+  "scopedRegistries": [
+    {
+      "name": "Keijiro",
+      "url": "https://registry.npmjs.com",
+      "scopes": [
+        "jp.keijiro"
+      ]
+    }
+  ]
 }
