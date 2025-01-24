@@ -280,12 +280,14 @@ MonoBehaviour:
   <Frequency>k__BackingField: 5
   <Octaves>k__BackingField: 5
   <Amplitude>k__BackingField: 0.5
+  <Offset>k__BackingField:
+    x: 0
+    y: 0
+    z: 0
   _noiseType: 2
   _dimensions:
     x: 512
     y: 512
-  _ui: {fileID: 1012783600}
-  _uiElementName: image-simplex-fractal-2d
   _shader: {fileID: -6465566751694194690, guid: ace54f1b246ed416c8f74efca5022526,
     type: 3}
 --- !u!114 &512697539
@@ -303,12 +305,14 @@ MonoBehaviour:
   <Frequency>k__BackingField: 5
   <Octaves>k__BackingField: 1
   <Amplitude>k__BackingField: 0.5
+  <Offset>k__BackingField:
+    x: 0
+    y: 0
+    z: 0
   _noiseType: 2
   _dimensions:
     x: 512
     y: 512
-  _ui: {fileID: 1012783600}
-  _uiElementName: image-simplex-2d
   _shader: {fileID: -6465566751694194690, guid: ace54f1b246ed416c8f74efca5022526,
     type: 3}
 --- !u!4 &512697540
@@ -359,12 +363,14 @@ MonoBehaviour:
   <Frequency>k__BackingField: 5
   <Octaves>k__BackingField: 5
   <Amplitude>k__BackingField: 1
+  <Offset>k__BackingField:
+    x: 0
+    y: 0
+    z: 0
   _noiseType: 1
   _dimensions:
     x: 512
     y: 512
-  _ui: {fileID: 1012783600}
-  _uiElementName: image-classic-fractal-3d
   _shader: {fileID: -6465566751694194690, guid: ace54f1b246ed416c8f74efca5022526,
     type: 3}
 --- !u!114 &904733668
@@ -382,12 +388,14 @@ MonoBehaviour:
   <Frequency>k__BackingField: 5
   <Octaves>k__BackingField: 1
   <Amplitude>k__BackingField: 1
+  <Offset>k__BackingField:
+    x: 0
+    y: 0
+    z: 0
   _noiseType: 1
   _dimensions:
     x: 512
     y: 512
-  _ui: {fileID: 1012783600}
-  _uiElementName: image-classic-3d
   _shader: {fileID: -6465566751694194690, guid: ace54f1b246ed416c8f74efca5022526,
     type: 3}
 --- !u!4 &904733669
@@ -471,6 +479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Frequency>k__BackingField: 4
+  <Animation>k__BackingField: 0
   _generators:
   - generator: {fileID: 2032093869}
     uiName: image-classic-2d
@@ -521,12 +530,14 @@ MonoBehaviour:
   <Frequency>k__BackingField: 5
   <Octaves>k__BackingField: 5
   <Amplitude>k__BackingField: 0.5
+  <Offset>k__BackingField:
+    x: 0
+    y: 0
+    z: 0
   _noiseType: 3
   _dimensions:
     x: 512
     y: 512
-  _ui: {fileID: 1012783600}
-  _uiElementName: image-simplex-fractal-3d
   _shader: {fileID: -6465566751694194690, guid: ace54f1b246ed416c8f74efca5022526,
     type: 3}
 --- !u!114 &1243557497
@@ -544,12 +555,14 @@ MonoBehaviour:
   <Frequency>k__BackingField: 5
   <Octaves>k__BackingField: 1
   <Amplitude>k__BackingField: 0.5
+  <Offset>k__BackingField:
+    x: 0
+    y: 0
+    z: 0
   _noiseType: 3
   _dimensions:
     x: 512
     y: 512
-  _ui: {fileID: 1012783600}
-  _uiElementName: image-simplex-3d
   _shader: {fileID: -6465566751694194690, guid: ace54f1b246ed416c8f74efca5022526,
     type: 3}
 --- !u!4 &1243557498
@@ -559,51 +572,6 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1243557495}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1844396567
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1844396569}
-  - component: {fileID: 1844396568}
-  m_Layer: 0
-  m_Name: Value Range Test
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1844396568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1844396567}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32a0e432d03714bfc91127981737687a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _compute: {fileID: 7200000, guid: ba5201e579ad4445bb23c28be6a0fcd8, type: 3}
---- !u!4 &1844396569
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1844396567}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -645,12 +613,14 @@ MonoBehaviour:
   <Frequency>k__BackingField: 5
   <Octaves>k__BackingField: 5
   <Amplitude>k__BackingField: 1
+  <Offset>k__BackingField:
+    x: 0
+    y: 0
+    z: 0
   _noiseType: 0
   _dimensions:
     x: 512
     y: 512
-  _ui: {fileID: 1012783600}
-  _uiElementName: image-classic-fractal-2d
   _shader: {fileID: -6465566751694194690, guid: ace54f1b246ed416c8f74efca5022526,
     type: 3}
 --- !u!114 &2032093869
@@ -668,12 +638,14 @@ MonoBehaviour:
   <Frequency>k__BackingField: 5
   <Octaves>k__BackingField: 1
   <Amplitude>k__BackingField: 1
+  <Offset>k__BackingField:
+    x: 0
+    y: 0
+    z: 0
   _noiseType: 0
   _dimensions:
     x: 512
     y: 512
-  _ui: {fileID: 1012783600}
-  _uiElementName: image-classic-2d
   _shader: {fileID: -6465566751694194690, guid: ace54f1b246ed416c8f74efca5022526,
     type: 3}
 --- !u!4 &2032093870
@@ -696,7 +668,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 474337631}
-  - {fileID: 1844396569}
   - {fileID: 1012783601}
   - {fileID: 2032093870}
   - {fileID: 904733669}

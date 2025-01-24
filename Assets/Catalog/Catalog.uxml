@@ -1,7 +1,7 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Packages/jp.keijiro.klak.ui-toolkit-assets/Runtime/Themes/Tena.uss?fileID=7433441132597879392&amp;guid=2bbbc33e8b2834f0ab25f4d4ef52c082&amp;type=3#Tena" />
     <Style src="project://database/Assets/Catalog/Catalog.uss?fileID=7433441132597879392&amp;guid=95daab4ff73284409a6d4766c6c9bb31&amp;type=3#Catalog" />
-    <engine:VisualElement name="root" data-source-type="ImageGeneratorController, Assembly-CSharp" style="flex-direction: row; flex-grow: 1;">
+    <engine:VisualElement name="root" data-source-type="CatalogController, Assembly-CSharp" style="flex-direction: row; flex-grow: 1;">
         <engine:VisualElement name="views" style="flex-grow: 1;">
             <engine:VisualElement name="classic-noise-panel" class="panel" style="flex-grow: 1;">
                 <engine:Label text="Classic Noise" class="header-label" />

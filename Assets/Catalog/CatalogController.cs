@@ -10,7 +10,7 @@ public struct ImageGeneratorUIPair
     public string uiName;
 }
 
-public sealed class ImageGeneratorController : MonoBehaviour
+public sealed class CatalogController : MonoBehaviour
 {
     [field:SerializeField, CreateProperty]
     public float Frequency { get; set; } = 5;
