@@ -1,8 +1,9 @@
 {
   "dependencies": {
     "com.unity.render-pipelines.universal": "17.0.3",
-    "com.unity.modules.uielements": "1.0.0",
-    "jp.keijiro.klak.ui-toolkit-assets": "0.0.1"
+    "jp.keijiro.klak.ui-toolkit-assets": "0.0.1",
+    "jp.keijiro.vfxgraphassets": "3.8.0",
+    "com.unity.modules.uielements": "1.0.0"
   },
   "scopedRegistries": [
     {

@@ -1,0 +1,29 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/jp.keijiro.klak.ui-toolkit-assets/Runtime/Themes/Tena.uss?fileID=7433441132597879392&amp;guid=2bbbc33e8b2834f0ab25f4d4ef52c082&amp;type=3#Tena" />
+    <engine:VisualElement name="root" data-source-type="CubeController, Assembly-CSharp" style="flex-direction: row; flex-grow: 1;">
+        <engine:VisualElement name="views" style="flex-direction: column-reverse;">
+            <engine:VisualElement style="margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px; padding-top: 5px; padding-right: 10px; padding-bottom: 5px; padding-left: 10px; background-color: rgba(17, 17, 17, 0.64); border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;">
+                <engine:Label text="Left: Classic Noise, Right: Simplex Noise" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement name="space" style="flex-grow: 1;" />
+        <engine:VisualElement name="options" class="panel" style="align-self: center; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px; padding-top: 4px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; background-color: rgba(17, 17, 17, 0.64); border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;">
+            <engine:Label text="Options" class="header-label" />
+            <engine:FloatField label="Frequency" value="1">
+                <Bindings>
+                    <engine:DataBinding property="value" data-source-path="_Frequency_k__BackingField" binding-mode="TwoWay" />
+                </Bindings>
+            </engine:FloatField>
+            <engine:Toggle label="Fractal" value="false">
+                <Bindings>
+                    <engine:DataBinding property="value" data-source-path="_Fractal_k__BackingField" binding-mode="TwoWay" />
+                </Bindings>
+            </engine:Toggle>
+            <engine:Toggle label="Animation" value="false">
+                <Bindings>
+                    <engine:DataBinding property="value" data-source-path="_Animation_k__BackingField" binding-mode="TwoWay" />
+                </Bindings>
+            </engine:Toggle>
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>

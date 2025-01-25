@@ -132,6 +132,15 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "com.unity.visualeffectgraph": {
+      "version": "17.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.shadergraph": "17.0.3",
+        "com.unity.render-pipelines.core": "17.0.3"
+      }
+    },
     "jp.keijiro.klak.ui-toolkit-assets": {
       "version": "0.0.1",
       "depth": 0,
@@ -146,6 +155,26 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
+    },
+    "jp.keijiro.shadergraphassets": {
+      "version": "2.5.2",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.shadergraph": "12.1.0",
+        "jp.keijiro.noiseshader": "2.0.0"
+      },
+      "url": "https://registry.npmjs.com"
+    },
+    "jp.keijiro.vfxgraphassets": {
+      "version": "3.8.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.visualeffectgraph": "17.0.0",
+        "jp.keijiro.shadergraphassets": "2.5.2"
+      },
+      "url": "https://registry.npmjs.com"
     },
     "com.unity.modules.hierarchycore": {
       "version": "1.0.0",
