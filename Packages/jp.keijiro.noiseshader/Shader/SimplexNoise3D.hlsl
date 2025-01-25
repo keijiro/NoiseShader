@@ -2,11 +2,19 @@
 // Description : Array and textureless GLSL 2D/3D/4D simplex
 //               noise functions.
 //      Author : Ian McEwan, Ashima Arts.
-//  Maintainer : ijm
-//     Lastmod : 20110822 (ijm)
+//  Maintainer : stegu
+//     Lastmod : 20201014 (stegu)
 //     License : Copyright (C) 2011 Ashima Arts. All rights reserved.
 //               Distributed under the MIT License. See LICENSE file.
 //               https://github.com/ashima/webgl-noise
+//               https://github.com/stegu/webgl-noise
+//
+
+//
+// This code has been modified by Keijiro Takahashi for use in Unity,
+// including a rewrite in HLSL with simplifications and optimizations.
+// Rights to the modifications are waived, and the original license
+// terms remain unchanged.
 //
 
 #ifndef _INCLUDE_JP_KEIJIRO_NOISESHADER_SIMPLEX_NOISE_3D_HLSL_

@@ -1,15 +1,22 @@
 //
 // GLSL textureless classic 3D noise "cnoise",
 // with an RSL-style periodic variant "pnoise".
-// Author:  Stefan Gustavson (stefan.gustavson@liu.se)
-// Version: 2011-10-11
+// Author:  Stefan Gustavson (stefan.gustavson@gmail.com)
+// Version: 2024-11-07
 //
 // Many thanks to Ian McEwan of Ashima Arts for the
 // ideas for permutation and gradient selection.
 //
 // Copyright (c) 2011 Stefan Gustavson. All rights reserved.
 // Distributed under the MIT license. See LICENSE file.
-// https://github.com/ashima/webgl-noise
+// https://github.com/stegu/webgl-noise
+//
+
+//
+// This code has been modified by Keijiro Takahashi for use in Unity,
+// including a rewrite in HLSL with simplifications and optimizations.
+// Rights to the modifications are waived, and the original license
+// terms remain unchanged.
 //
 
 #ifndef _INCLUDE_JP_KEIJIRO_NOISESHADER_CLASSIC_NOISE_3D_HLSL_
