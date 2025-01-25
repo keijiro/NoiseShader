@@ -21,6 +21,11 @@ float4 wglnoise_mod(float4 x, float4 y)
     return x - y * floor(x / y);
 }
 
+float wglnoise_fade(float t)
+{
+    return t * t * t * (t * (t * 6 - 15) + 10);
+}
+
 float2 wglnoise_fade(float2 t)
 {
     return t * t * t * (t * (t * 6 - 15) + 10);
@@ -49,6 +54,11 @@ float3 wglnoise_mod289(float3 x)
 float4 wglnoise_mod289(float4 x)
 {
     return x - floor(x / 289) * 289;
+}
+
+float2 wglnoise_permute(float2 x)
+{
+    return wglnoise_mod289((x * 34 + 10) * x);
 }
 
 float3 wglnoise_permute(float3 x)
