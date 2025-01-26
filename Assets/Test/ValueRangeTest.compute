@@ -1,121 +1,131 @@
+#pragma kernel Aggregate
+#pragma kernel Gradient1D
 #pragma kernel Classic2D
 #pragma kernel Classic3D
 #pragma kernel Simplex2D
 #pragma kernel Simplex3D
 
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Macros.hlsl"
+#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Random.hlsl"
+#include "Packages/jp.keijiro.noiseshader/Shader/Noise1D.hlsl"
 #include "Packages/jp.keijiro.noiseshader/Shader/ClassicNoise2D.hlsl"
 #include "Packages/jp.keijiro.noiseshader/Shader/ClassicNoise3D.hlsl"
 #include "Packages/jp.keijiro.noiseshader/Shader/SimplexNoise2D.hlsl"
 #include "Packages/jp.keijiro.noiseshader/Shader/SimplexNoise3D.hlsl"
 
-// A single iteration of Bob Jenkins' One-At-A-Time hashing algorithm.
-uint JenkinsHash(uint x)
+static const uint TotalIteration = 1u << 30;
+static const uint ThreadPerGroup = 64u;
+static const uint IterationPerThread = 512u;
+static const uint ThreadGroupCount = TotalIteration / ThreadPerGroup / IterationPerThread;
+static const float ParameterRange = 300;
+
+float RandomFloat(uint thread_index, uint iteration)
 {
-    x += (x << 10u);
-    x ^= (x >>  6u);
-    x += (x <<  3u);
-    x ^= (x >> 11u);
-    x += (x << 15u);
-    return x;
+    uint seed = thread_index * IterationPerThread + iteration;
+    float x = GenerateHashedRandomFloat(seed);
+    return (x * 2 - 1) * ParameterRange;
 }
 
-// Construct a float with half-open range [0, 1) using low 23 bits.
-// All zeros yields 0, all ones yields the next smallest representable value below 1.
-float ConstructFloat(int m) {
-    const int ieeeMantissa = 0x007FFFFF; // Binary FP32 mantissa bitmask
-    const int ieeeOne      = 0x3F800000; // 1.0 in FP32 IEEE
-
-    m &= ieeeMantissa;                   // Keep only mantissa bits (fractional part)
-    m |= ieeeOne;                        // Add fractional part to 1.0
-
-    float  f = asfloat(m);               // Range [1, 2)
-    return f - 1;                        // Range [0, 1)
-}
-
-float ConstructFloat(uint m)
+float2 RandomFloat2(uint thread_index, uint iteration)
 {
-    return ConstructFloat(asint(m));
+    uint seed = (thread_index * IterationPerThread + iteration) * 2u;
+    float x = GenerateHashedRandomFloat(seed);
+    float y = GenerateHashedRandomFloat(seed + 1u);
+    return (float2(x, y) * 2 - 1) * ParameterRange;
 }
 
-// Pseudo-random value in half-open range [0, 1). The distribution is reasonably uniform.
-// Ref: https://stackoverflow.com/a/17479300
-float GenerateHashedRandomFloat(uint x)
+float3 RandomFloat3(uint thread_index, uint iteration)
 {
-    return ConstructFloat(JenkinsHash(x));
+    uint seed = (thread_index * IterationPerThread + iteration) * 3u;
+    float x = GenerateHashedRandomFloat(seed);
+    float y = GenerateHashedRandomFloat(seed + 1u);
+    float z = GenerateHashedRandomFloat(seed + 2u);
+    return (float3(x, y, z) * 2 - 1) * ParameterRange;
 }
 
-float2 RandomFloat2(uint thread_id, uint index)
-{
-    uint offset = thread_id << 26;
-    float x = GenerateHashedRandomFloat(offset + index * 2u + 0u);
-    float y = GenerateHashedRandomFloat(offset + index * 2u + 1u);
-    return float2(x, y) * 600 - 300;
-}
+RWStructuredBuffer<float> _AccBuffer;
+RWStructuredBuffer<float> _OutBuffer;
 
-float3 RandomFloat3(uint thread_id, uint index)
-{
-    uint offset = thread_id << 26;
-    float x = GenerateHashedRandomFloat(offset + index * 4u + 0u);
-    float y = GenerateHashedRandomFloat(offset + index * 4u + 1u);
-    float z = GenerateHashedRandomFloat(offset + index * 4u + 2u);
-    return float3(x, y, z) * 600 - 300;
-}
-
-RWStructuredBuffer<float> _Output;
-
-#define THREAD_COUNT 64
-#define ITERATION (1u << 24)
-
-groupshared float shared_array[THREAD_COUNT];
+groupshared float shared_array[ThreadPerGroup];
 
 float GetSharedArrayMax()
 {
-    float maxval = shared_array[0];
-    for (uint i = 1; i < THREAD_COUNT; i++)
-        maxval = max(maxval, shared_array[i]);
-    return maxval;
+    float temp = shared_array[0];
+    for (uint i = 1; i < ThreadPerGroup; i++)
+        temp = max(temp, shared_array[i]);
+    return temp;
 }
 
-[numthreads(THREAD_COUNT, 1, 1)]
-void Classic2D(uint id : SV_DispatchThreadID)
+[numthreads(1, 1, 1)]
+void Aggregate()
 {
-    float maxval = 0;
-    for (uint i = 0; i < ITERATION; i++)
-        maxval = max(maxval, abs(ClassicNoise(RandomFloat2(id, i))));
-    shared_array[id] = maxval;
-    GroupMemoryBarrierWithGroupSync();
-    if (id.x == 0) _Output[0] = GetSharedArrayMax();
+    float temp = _AccBuffer[0];
+    for (uint i = 1; i < ThreadGroupCount; i++)
+        temp = max(temp, _AccBuffer[i]);
+    _OutBuffer[0] = temp;
 }
 
-[numthreads(THREAD_COUNT, 1, 1)]
-void Classic3D(uint id : SV_DispatchThreadID)
+[numthreads(ThreadPerGroup, 1, 1)]
+void Gradient1D(uint group_id : SV_GroupID,
+                uint group_thread_id: SV_GroupThreadID,
+                uint dispatch_id : SV_DispatchThreadID)
 {
-    float maxval = 0;
-    for (uint i = 0; i < ITERATION; i++)
-        maxval = max(maxval, abs(ClassicNoise(RandomFloat3(id, i))));
-    shared_array[id] = maxval;
+    float temp = 0;
+    for (uint i = 0; i < IterationPerThread; i++)
+        temp = max(temp, abs(GradientNoise(RandomFloat(dispatch_id, i))));
+    shared_array[group_thread_id] = temp;
     GroupMemoryBarrierWithGroupSync();
-    if (id.x == 0) _Output[0] = GetSharedArrayMax();
+    if (group_thread_id == 0) _AccBuffer[group_id] = GetSharedArrayMax();
 }
 
-[numthreads(THREAD_COUNT, 1, 1)]
-void Simplex2D(uint id : SV_DispatchThreadID)
+[numthreads(ThreadPerGroup, 1, 1)]
+void Classic2D(uint group_id : SV_GroupID,
+               uint group_thread_id: SV_GroupThreadID,
+               uint dispatch_id : SV_DispatchThreadID)
 {
-    float maxval = 0;
-    for (uint i = 0; i < ITERATION; i++)
-        maxval = max(maxval, abs(SimplexNoise(RandomFloat2(id, i))));
-    shared_array[id] = maxval;
+    float2 temp = 0;
+    for (uint i = 0; i < IterationPerThread; i++)
+        temp = max(temp, abs(ClassicNoise(RandomFloat2(dispatch_id, i))));
+    shared_array[group_thread_id] = max(temp.x, temp.y);
     GroupMemoryBarrierWithGroupSync();
-    if (id.x == 0) _Output[0] = GetSharedArrayMax();
+    if (group_thread_id == 0) _AccBuffer[group_id] = GetSharedArrayMax();
 }
 
-[numthreads(THREAD_COUNT, 1, 1)]
-void Simplex3D(uint id : SV_DispatchThreadID)
+[numthreads(ThreadPerGroup, 1, 1)]
+void Classic3D(uint group_id : SV_GroupID,
+               uint group_thread_id: SV_GroupThreadID,
+               uint dispatch_id : SV_DispatchThreadID)
 {
-    float maxval = 0;
-    for (uint i = 0; i < ITERATION; i++)
-        maxval = max(maxval, abs(SimplexNoise(RandomFloat3(id, i))));
-    shared_array[id] = maxval;
+    float3 temp = 0;
+    for (uint i = 0; i < IterationPerThread; i++)
+        temp = max(temp, abs(ClassicNoise(RandomFloat3(dispatch_id, i))));
+    shared_array[group_thread_id] = max(max(temp.x, temp.y), temp.z);
     GroupMemoryBarrierWithGroupSync();
-    if (id.x == 0) _Output[0] = GetSharedArrayMax();
+    if (group_thread_id == 0) _AccBuffer[group_id] = GetSharedArrayMax();
+}
+
+[numthreads(ThreadPerGroup, 1, 1)]
+void Simplex2D(uint group_id : SV_GroupID,
+               uint group_thread_id: SV_GroupThreadID,
+               uint dispatch_id : SV_DispatchThreadID)
+{
+    float2 temp = 0;
+    for (uint i = 0; i < IterationPerThread; i++)
+        temp = max(temp, abs(SimplexNoise(RandomFloat2(dispatch_id, i))));
+    shared_array[group_thread_id] = max(temp.x, temp.y);
+    GroupMemoryBarrierWithGroupSync();
+    if (group_thread_id == 0) _AccBuffer[group_id] = GetSharedArrayMax();
+}
+
+[numthreads(ThreadPerGroup, 1, 1)]
+void Simplex3D(uint group_id : SV_GroupID,
+               uint group_thread_id: SV_GroupThreadID,
+               uint dispatch_id : SV_DispatchThreadID)
+{
+    float3 temp = 0;
+    for (uint i = 0; i < IterationPerThread; i++)
+        temp = max(temp, abs(SimplexNoise(RandomFloat3(dispatch_id, i))));
+    shared_array[group_thread_id] = max(max(temp.x, temp.y), temp.z);
+    GroupMemoryBarrierWithGroupSync();
+    if (group_thread_id == 0) _AccBuffer[group_id] = GetSharedArrayMax();
 }
