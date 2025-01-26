@@ -1,6 +1,6 @@
 # Noise Shader Library for Unity
 
-![gif](https://github.com/user-attachments/assets/8f97b972-5fb5-4258-ba50-dd8fadb75ffc)
+![gif](https://github.com/user-attachments/assets/de57f3c3-8412-4c7e-89b2-a82486e6b216)
 
 **NoiseShader** is a Unity package that provides 2D/3D gradient noise functions
 written HLSL. These functions are ported from the [webgl-noise] library,
