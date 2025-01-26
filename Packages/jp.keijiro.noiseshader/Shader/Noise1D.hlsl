@@ -17,7 +17,7 @@ float GradientNoise(float x, float seed)
     float fade = wglnoise_fade(f);
     float v = lerp(n.x, n.y, fade);
 
-    return v;
+    return v * 2;
 }
 
 float GradientNoise(float x)
