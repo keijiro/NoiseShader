@@ -1,56 +1,24 @@
-Noise Shader Library for Unity
-==============================
+# Noise Shader Library for Unity
 
-**NoiseShader** is a Unity package that provides 2D/3D gradient noise
-functions written in the shader language. These functions are ported from the
-[webgl-noise] library that is originally written by Stefan Gustavson and Ahima
-Arts.
+**NoiseShader** is a Unity package that provides 2D/3D gradient noise functions
+written HLSL. These functions are ported from the [webgl-noise] library,
+originally developed by Stefan Gustavson and Ahima Arts.
 
-[webgl-noise]: https://github.com/ashima/webgl-noise
+[webgl-noise]: https://github.com/stegu/webgl-noise
 
-At the moment, it contains the following functions:
+Currently, the package includes the following noise functions:
 
+- 1D gradient noise
 - Classic Perlin noise (2D/3D)
 - Periodic Perlin noise (2D/3D)
 - Simplex noise (2D/3D)
 - Analytical derivatives of simplex noise (2D/3D)
 
-How To Install
---------------
+## How to Install
 
-This package uses the [scoped registry] feature to resolve package dependencies.
-Please add the following sections to the manifest file (Packages/manifest.json).
+The Klutter Tools package (`jp.keijiro.noiseshader`) can be installed via the
+"Keijiro" scoped registry using Package Manager. To add the registry to your
+project, please follow [these instructions].
 
-[scoped registry]: https://docs.unity3d.com/Manual/upm-scoped.html
-
-To the `scopedRegistries` section:
-
-```
-{
-  "name": "Keijiro",
-  "url": "https://registry.npmjs.com",
-  "scopes": [ "jp.keijiro" ]
-}
-```
-
-To the `dependencies` section:
-
-```
-"jp.keijiro.noiseshader": "2.0.0"
-```
-
-After changes, the manifest file should look like below:
-
-```
-{
-  "scopedRegistries": [
-    {
-      "name": "Keijiro",
-      "url": "https://registry.npmjs.com",
-      "scopes": [ "jp.keijiro" ]
-    }
-  ],
-  "dependencies": {
-    "jp.keijiro.noiseshader": "2.0.0",
-...
-```
+[these instructions]:
+  https://gist.github.com/keijiro/f8c7e8ff29bfe63d86b888901b82644c
