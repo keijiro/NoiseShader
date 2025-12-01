@@ -1,6 +1,6 @@
 {
   "name": "jp.keijiro.noiseshader",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "displayName": "Noise Shader",
   "description": "Noise Shader provides lightweight 2D/3D gradient noise functions for shader use.",
   "unity": "2022.3",
@@ -10,5 +10,5 @@
   "documentationUrl": "https://github.com/keijiro/NoiseShader",
   "licensesUrl": "https://github.com/keijiro/NoiseShader/blob/master/LICENSE",
   "license": "MIT",
-  "_upm": { "changelog": "" }
+  "_upm": { "changelog": "<b>Added</b><br>- Added signing for Unity 6.3." }
 }
