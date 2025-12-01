@@ -1,13 +1,14 @@
 {
-  "author": "Keijiro Takahashi",
-  "description": "Noise Shader provides lightweight 2D/3D gradient noise functions for shader use.",
-  "displayName": "Noise Shader",
-  "keywords": [ "unity" ],
-  "license": "MIT",
   "name": "jp.keijiro.noiseshader",
-  "repository": "github:keijiro/NoiseShader",
-  "unity": "2019.3",
-  "unityRelease": "0f1",
-  "version": "3.0.0"
+  "version": "3.0.0",
+  "displayName": "Noise Shader",
+  "description": "Noise Shader provides lightweight 2D/3D gradient noise functions for shader use.",
+  "unity": "2022.3",
+  "author": "Keijiro Takahashi",
+  "dependencies": { },
+  "changelogUrl": "https://github.com/keijiro/NoiseShader/blob/master/CHANGELOG.md",
+  "documentationUrl": "https://github.com/keijiro/NoiseShader",
+  "licensesUrl": "https://github.com/keijiro/NoiseShader/blob/master/LICENSE",
+  "license": "MIT",
+  "_upm": { "changelog": "" }
 }
-
