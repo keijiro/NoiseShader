@@ -18,9 +18,9 @@ Currently, the package includes the following noise functions:
 
 ## How to Install
 
-The Klutter Tools package (`jp.keijiro.noiseshader`) can be installed via the
-"Keijiro" scoped registry using Package Manager. To add the registry to your
-project, please follow [these instructions].
+You can install the Noise Shader package (`jp.keijiro.noiseshader`) via the
+"Keijiro" scoped registry using the Unity Package Manager. To add the registry
+to your project, follow [these instructions].
 
 [these instructions]:
   https://gist.github.com/keijiro/f8c7e8ff29bfe63d86b888901b82644c

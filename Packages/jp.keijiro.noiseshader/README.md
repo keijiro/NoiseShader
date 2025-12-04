@@ -1,8 +1,10 @@
 # Noise Shader Library for Unity
 
-**NoiseShader** is a Unity package that provides 2D/3D gradient noise functions
-written HLSL. These functions are ported from the [webgl-noise] library,
-originally developed by Stefan Gustavson and Ahima Arts.
+![gif](https://github.com/user-attachments/assets/de57f3c3-8412-4c7e-89b2-a82486e6b216)
+
+**NoiseShader** is a Unity package that provides gradient noise functions
+written in HLSL. Most of these functions are ported from the [webgl-noise]
+library, originally developed by Stefan Gustavson and Ahima Arts.
 
 [webgl-noise]: https://github.com/stegu/webgl-noise
 
@@ -16,9 +18,9 @@ Currently, the package includes the following noise functions:
 
 ## How to Install
 
-The Klutter Tools package (`jp.keijiro.noiseshader`) can be installed via the
-"Keijiro" scoped registry using Package Manager. To add the registry to your
-project, please follow [these instructions].
+You can install the Noise Shader package (`jp.keijiro.noiseshader`) via the
+"Keijiro" scoped registry using the Unity Package Manager. To add the registry
+to your project, follow [these instructions].
 
 [these instructions]:
   https://gist.github.com/keijiro/f8c7e8ff29bfe63d86b888901b82644c
